@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35825.156
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMAO.API", "GMAO.API\GMAO.API.csproj", "{EEFC6DE6-6596-420C-8DFF-D792B0596DA3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMAO.Application", "GMAO.Application\GMAO.Application.csproj", "{2ACA90D5-4666-4BFB-9421-2294BB296D38}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMAO.Domain", "GMAO.Domain\GMAO.Domain.csproj", "{E5B9D389-6168-4541-AA0B-ED83FF286A94}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMAO.Infrastructure", "GMAO.Infrastructure\GMAO.Infrastructure.csproj", "{F21FE838-531A-42DE-9087-69147CD59836}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMAO.DomainService", "GMAO.DomainService\GMAO.DomainService.csproj", "{12171640-BF0A-45FB-8F48-8F303A547C39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMAO.Shared", "GMAO.Shared\GMAO.Shared.csproj", "{5BDFDA88-E755-4312-A2AD-4A92807BD87C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EEFC6DE6-6596-420C-8DFF-D792B0596DA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEFC6DE6-6596-420C-8DFF-D792B0596DA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEFC6DE6-6596-420C-8DFF-D792B0596DA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEFC6DE6-6596-420C-8DFF-D792B0596DA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2ACA90D5-4666-4BFB-9421-2294BB296D38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2ACA90D5-4666-4BFB-9421-2294BB296D38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2ACA90D5-4666-4BFB-9421-2294BB296D38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2ACA90D5-4666-4BFB-9421-2294BB296D38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5B9D389-6168-4541-AA0B-ED83FF286A94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5B9D389-6168-4541-AA0B-ED83FF286A94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5B9D389-6168-4541-AA0B-ED83FF286A94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5B9D389-6168-4541-AA0B-ED83FF286A94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F21FE838-531A-42DE-9087-69147CD59836}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F21FE838-531A-42DE-9087-69147CD59836}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F21FE838-531A-42DE-9087-69147CD59836}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F21FE838-531A-42DE-9087-69147CD59836}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12171640-BF0A-45FB-8F48-8F303A547C39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12171640-BF0A-45FB-8F48-8F303A547C39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12171640-BF0A-45FB-8F48-8F303A547C39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12171640-BF0A-45FB-8F48-8F303A547C39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BDFDA88-E755-4312-A2AD-4A92807BD87C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BDFDA88-E755-4312-A2AD-4A92807BD87C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BDFDA88-E755-4312-A2AD-4A92807BD87C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BDFDA88-E755-4312-A2AD-4A92807BD87C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B2986B69-DCCD-4EFD-BFD4-910FE7FA0EC5}
+	EndGlobalSection
+EndGlobal
