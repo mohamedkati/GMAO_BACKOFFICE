@@ -1,5 +1,7 @@
-﻿using GMAO.Application.Common.AppSettings;
+﻿using FluentValidation;
+using GMAO.Application.Common.AppSettings;
 using GMAO.Application.Common.Behaviours;
+using GMAO.Application.Features.Auth.Queries.Login;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -18,11 +20,12 @@ namespace GMAO.Application.DIExtensions
             {
                 cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly);
             });
+            services.AddValidatorsFromAssembly(typeof(LoginQuery).Assembly);
             // Enregistrement des Behaviors (Pipeline MediatR)
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
             return services;
         }

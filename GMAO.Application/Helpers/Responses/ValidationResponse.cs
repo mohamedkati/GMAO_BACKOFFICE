@@ -8,9 +8,9 @@ namespace GMAO.Application.Helpers.Responses
 {
     public class ValidationResponse : ResponseResult<Dictionary<string, string[]>>
     {
-        private readonly Dictionary<string, string[]> _;
+        public readonly Dictionary<string, string[]> _;
 
-        private bool IsValidationError { get; set; }
+        public bool IsValidationError { get; protected set; }
 
         public static ValidationResponse Result(Dictionary<string, string[]> errors)
         {

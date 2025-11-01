@@ -141,6 +141,7 @@ namespace GMAO.Infrastructure.Persistance.Seed
             var staffExist = await context.Staffs.AnyAsync(x => x.Email == tenantAdminEmail);
             if (!staffExist)
             {
+                // changed to Test@demo123
                 var staff = new Staff(tenantAdmin.Id, demoTenant.Id, "Mohammed", "KATI", tenantAdminEmail, "0641830560", "admin", adminRole.Id, "Admin@123");
                 await context.Staffs.AddAsync(staff);
                 await context.SaveChangesAsync();

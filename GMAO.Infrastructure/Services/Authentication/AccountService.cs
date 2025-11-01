@@ -50,31 +50,31 @@ namespace GMAO.Infrastructure.Services.Authentication
         /// <param name="email"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        /// <exception cref="ValidationException"></exception>
+        /// <exception cref="AppValidationException"></exception>
         public async Task<LoggedUserDto> LoginAsync(string email, string password)
         {
             var user = await _userManager.FindByEmailAsync(email);
             if (user is null || !await _userManager.CheckPasswordAsync(user, password))
             {
-                throw new ValidationException(new Dictionary<string, string[]>() { { "credentials", new[] { "Invalid credentials !" } } });
+                throw new AppValidationException(new Dictionary<string, string[]>() { { "credentials", new[] { "Invalid credentials !" } } });
             }
             var tenant = await _context.SetEntity<TenantUser>().FirstOrDefaultAsync(tu => tu.UserId == user.Id);
             if (tenant is null)
             {
-                throw new ValidationException(new Dictionary<string, string[]>() { { "tenant", new[] { "No tenant assigned to this user !" } } });
+                throw new AppValidationException(new Dictionary<string, string[]>() { { "tenant", new[] { "No tenant assigned to this user !" } } });
             }
 
             var roles = await _userManager.GetRolesAsync(user);
             var domainPermissions = await _context.SetEntity<TenantUser>()
                 .Include(x => x.Role)
                 .ThenInclude(x => x.Permissions)
-                .Where(x => x.TenantId == tenant.Id && x.UserId == user.Id)
+                .Where(t => t.Id == tenant.Id)
                 .SelectMany(x => x.Role.Permissions)
                 .Select(x => x.Code)
                 .ToListAsync();
 
             var domainRoles = await _context.SetEntity<TenantUser>().Include(x => x.Role)
-                .Where(x => x.TenantId == tenant.Id && x.UserId == user.Id)
+                .Where(t => t.Id == tenant.Id)
                 .Select(x => x.Role.Name)
                 .ToListAsync();
 
@@ -112,7 +112,7 @@ namespace GMAO.Infrastructure.Services.Authentication
         /// <param name="email"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        /// <exception cref="ValidationException"></exception>
+        /// <exception cref="AppValidationException"></exception>
         public async Task<Guid> RegisterAsync(string username, string phoneNumber, string email, string password)
         {
             await ValidateUserRegistration(username, email);
@@ -128,7 +128,7 @@ namespace GMAO.Infrastructure.Services.Authentication
             if (!result.Succeeded)
             {
                 var errors = result.Errors.ToDictionary(e => e.Code, e => new[] { e.Description });
-                throw new ValidationException(errors);
+                throw new AppValidationException(errors);
             }
             // Assign default role to user (e.g., "User")
             //var defaultRoleName = "User";
@@ -168,7 +168,7 @@ namespace GMAO.Infrastructure.Services.Authentication
         /// <param name="newPassword"></param>
         /// <returns></returns>
         /// <exception cref="NotFoundException"></exception>
-        /// <exception cref="ValidationException"></exception>
+        /// <exception cref="AppValidationException"></exception>
         public async Task<bool> ForgotPasswordAsync(string userId, string token, string newPassword)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -182,7 +182,7 @@ namespace GMAO.Infrastructure.Services.Authentication
             if (!result.Succeeded)
             {
                 var errors = result.Errors.ToDictionary(e => e.Code, e => new[] { e.Description });
-                throw new ValidationException(errors);
+                throw new AppValidationException(errors);
             }
             user.DefaultPasswordChanged = true;
             await _userManager.UpdateAsync(user);
@@ -200,7 +200,7 @@ namespace GMAO.Infrastructure.Services.Authentication
         /// <param name="oldPassword"></param>
         /// <returns></returns>
         /// <exception cref="NotFoundException"></exception>
-        /// <exception cref="ValidationException"></exception>
+        /// <exception cref="AppValidationException"></exception>
         public async Task<bool> ChangePasswordAsync(Guid userId, string newPassword, string oldPassword)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
@@ -211,14 +211,14 @@ namespace GMAO.Infrastructure.Services.Authentication
             var isOldPasswordValid = await _userManager.CheckPasswordAsync(user, oldPassword);
             if (!isOldPasswordValid)
             {
-                throw new ValidationException(new Dictionary<string, string[]>() { { "oldPassword", new[] { "Old password is incorrect !" } } });
+                throw new AppValidationException(new Dictionary<string, string[]>() { { "oldPassword", new[] { "Old password is incorrect !" } } });
             }
 
             var resukt = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
             if (!resukt.Succeeded)
             {
                 var errors = resukt.Errors.ToDictionary(e => e.Code, e => new[] { e.Description });
-                throw new ValidationException(errors);
+                throw new AppValidationException(errors);
             }
 
             user.DefaultPasswordChanged = true;
@@ -244,7 +244,7 @@ namespace GMAO.Infrastructure.Services.Authentication
         /// <param name="userId"></param>
         /// <returns></returns>
         /// <exception cref="NotFoundException"></exception>
-        /// <exception cref="ValidationException"></exception>
+        /// <exception cref="AppValidationException"></exception>
         public async Task<bool> ConfirmUserRegistrationAsync(string code, string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -257,7 +257,7 @@ namespace GMAO.Infrastructure.Services.Authentication
             if (!result.Succeeded)
             {
                 var errors = result.Errors.ToDictionary(e => e.Code, e => new[] { e.Description });
-                throw new ValidationException(errors);
+                throw new AppValidationException(errors);
             }
             return result.Succeeded;
         }
@@ -313,14 +313,14 @@ namespace GMAO.Infrastructure.Services.Authentication
         /// <param name="username"></param>
         /// <param name="email"></param>
         /// <returns></returns>
-        /// <exception cref="ValidationException"></exception>
+        /// <exception cref="AppValidationException"></exception>
         private async Task ValidateUserRegistration(string username, string email)
         {
             var userExist = await _userManager.FindByEmailAsync(username);
-            if (userExist is not null) throw new ValidationException(new Dictionary<string, string[]>() { { "email", new[] { "Email already used !" } } });
+            if (userExist is not null) throw new AppValidationException(new Dictionary<string, string[]>() { { "email", new[] { "Email already used !" } } });
 
             userExist = await _userManager.FindByNameAsync(username);
-            if (userExist is not null) throw new ValidationException(new Dictionary<string, string[]>() { { "username", new[] { "Username already used !" } } });
+            if (userExist is not null) throw new AppValidationException(new Dictionary<string, string[]>() { { "username", new[] { "Username already used !" } } });
         }
 
         /// <summary>

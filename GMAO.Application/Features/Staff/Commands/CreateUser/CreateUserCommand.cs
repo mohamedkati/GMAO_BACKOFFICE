@@ -1,4 +1,5 @@
-﻿using GMAO.Application.Common.Exceptions;
+﻿using GMAO.Application.Common.Authorization;
+using GMAO.Application.Common.Exceptions;
 using GMAO.Application.Common.Interfaces;
 using GMAO.Application.Common.Interfaces.Authentication;
 using GMAO.Application.Helpers.Responses;
@@ -13,9 +14,12 @@ using System.Threading.Tasks;
 using StaffEntity = GMAO.Domain.Entities.Staff;
 namespace GMAO.Application.Features.Staff.Commands.CreateUser
 {
-    public record CreateUserCommand(string UserName, string Email, string FirstName, string LastName, string PhoneNumber, Guid RoleId) : IRequest<ResponseResult<Guid>>
+    public record CreateUserCommand(string UserName, string Email, string FirstName, string LastName, string PhoneNumber, Guid RoleId) : IRequest<ResponseResult<Guid>>, IRequiredPermission
     {
-
+        public string[] RequiredPermissions => [];
+        public string[] RequiredRoles => ["Admin"];
+        public bool MustMatchTenant => true;
+        public bool RequireAuthentication => true;
     }
 
     public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, ResponseResult<Guid>>
@@ -49,7 +53,7 @@ namespace GMAO.Application.Features.Staff.Commands.CreateUser
                 await _context.CommitTransactionAsync();
                 return ResponseResult<Guid>.OkResult(userId);
             }
-            catch (ValidationException ex)
+            catch (AppValidationException ex)
             {
                 await _context.RollbackTransactionAsync();
                 throw;

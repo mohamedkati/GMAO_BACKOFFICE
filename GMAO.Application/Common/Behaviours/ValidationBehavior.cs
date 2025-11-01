@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using GMAO.Application.Common.Exceptions;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -42,7 +43,7 @@ namespace GMAO.Application.Common.Behaviours
                 .ToList();
 
             if (failures.Count != 0)
-                throw new ValidationException(failures);
+                throw new AppValidationException(failures);
 
             return await next();
         }

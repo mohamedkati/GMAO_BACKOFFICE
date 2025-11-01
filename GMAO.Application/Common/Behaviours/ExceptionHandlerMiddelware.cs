@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace GMAO.Application.Common.Behaviours
@@ -30,10 +31,28 @@ namespace GMAO.Application.Common.Behaviours
             {
                 var response = context.Response;
                 response.ContentType = "application/json";
+                var jsonOptions = new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                    WriteIndented = true,
+                    Converters =
+                   {
+                       new JsonStringEnumConverter(JsonNamingPolicy.CamelCase)
+                   },
+                    DictionaryKeyPolicy = JsonNamingPolicy.CamelCase
+                };
                 var responseModel = ResponseResult<string>.FailResult(error.Message);
 
                 switch (error)
                 {
+                    case UnAuthenticatedException e:
+                        // unauthorized error
+                        response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        break;
+                    case UnAuthorizedException e:
+                        // forbidden error
+                        response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        break;
                     case NotFoundException:
                         response.StatusCode = (int)HttpStatusCode.NotFound;
                         break;
@@ -41,12 +60,12 @@ namespace GMAO.Application.Common.Behaviours
                         // custom application error
                         response.StatusCode = (int)HttpStatusCode.BadRequest;
                         break;
-                    case ValidationException e:
+                    case AppValidationException e:
                         {
                             // custom application error
                             var validationResponse = ValidationResponse.Result(e.Errors.ToDictionary());
                             response.StatusCode = (int)HttpStatusCode.BadRequest;
-                            var validationResult = JsonSerializer.Serialize(validationResponse);
+                            var validationResult = JsonSerializer.Serialize<ValidationResponse>(validationResponse, jsonOptions);
                             await response.WriteAsync(validationResult);
                             return;
                         }
@@ -71,7 +90,7 @@ namespace GMAO.Application.Common.Behaviours
                         //    error.Message, error.InnerException?.Message);
                         break;
                 }
-                var result = JsonSerializer.Serialize(responseModel);
+                var result = JsonSerializer.Serialize(responseModel, jsonOptions);
 
                 await response.WriteAsync(result);
             }

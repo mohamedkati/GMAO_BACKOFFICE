@@ -9,9 +9,9 @@ namespace GMAO.Application.Helpers.Responses
 {
     public class ResponseResult<T>
     {
-        protected T Data { get; set; }
-        protected bool IsSucceeded { get; set; }
-        protected string ErrorMessage { get; set; }
+        public T Data { get; protected set; }
+        public bool IsSucceeded { get; protected set; }
+        public string ErrorMessage { get; protected set; }
 
 
         public static ResponseResult<T> OkResult(T data)
@@ -26,7 +26,7 @@ namespace GMAO.Application.Helpers.Responses
         {
             var response = new ResponseResult<T>();
             response.ErrorMessage = message;
-            response.IsSucceeded = true;
+            response.IsSucceeded = false;
             return response;
         }
 

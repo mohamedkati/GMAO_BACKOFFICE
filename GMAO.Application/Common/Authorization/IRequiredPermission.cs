@@ -6,5 +6,6 @@
         string[] RequiredRoles { get; }
         bool MustMatchTenant { get; }
         bool RequireAuthentication { get; }
+        bool CheckEmailConfirmedAndPasswordChanged  => true;
     }
 }

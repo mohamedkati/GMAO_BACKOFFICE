@@ -13,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+
 builder.Services.AddControllers();
 builder.Services.Configure<EmailSetting>(builder.Configuration.GetSection("MailSettings"));
 builder.Services.Configure<AppSetting>(builder.Configuration.GetSection(nameof(AppSetting)));
@@ -21,12 +22,19 @@ builder.Services.AddHttpContextAccessor();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+
+builder.Services.ConfigureSwagger();
+
+builder.Services.AddRouting(options =>
+{
+    options.LowercaseUrls = true;
+    options.LowercaseQueryStrings = true;
+});
 builder.Services.ConfigureInfraServices(builder.Configuration);
 builder.Services.AddInfrastructureServices(builder.Configuration).AddDefaultTokenProviders();
 builder.Services.ConfigureAppAuthenticationServices();
 builder.Services.RegisterAuthentication(builder.Configuration);
 builder.Services.AddApplicationLayer();
-
 
 var app = builder.Build();
 
@@ -34,6 +42,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.MapSwagger();
 }
 
 await DbInitializer.SeedAsync(app.Services);
@@ -41,7 +50,7 @@ await DbInitializer.SeedAsync(app.Services);
 app.UseMiddleware<ExceptionHandlerMiddelware>();
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

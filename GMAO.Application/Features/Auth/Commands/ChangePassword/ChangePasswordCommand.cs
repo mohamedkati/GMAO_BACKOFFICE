@@ -17,6 +17,7 @@ namespace GMAO.Application.Features.Auth.Commands.ChangePassword
         public bool MustMatchTenant => true;
 
         public bool RequireAuthentication => true;
+        public bool CheckEmailConfirmedAndPasswordChanged => false;
     }
 
     public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, ResponseResult<bool>>

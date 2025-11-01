@@ -25,6 +25,16 @@ namespace GMAO.Application.Common.Behaviours
             if (user is null || user.Identity is null || !user.Identity.IsAuthenticated)
                 throw new UnAuthenticatedException("User not authenticated.");
 
+            if (authorization.CheckEmailConfirmedAndPasswordChanged == true)
+            {
+                var emailConfirmedClaim = user.FindFirst("email_confirmed")?.Value;
+                var passwordChangedClaim = user.FindFirst("default_password_changed")?.Value;
+                if (emailConfirmedClaim?.ToLower() != "true")
+                    throw new UnAuthorizedException("User email is not confirmed.");
+                if (passwordChangedClaim?.ToLower() != "true")
+                    throw new UnAuthorizedException("User must change password.");
+            }
+
             if (authorization.RequiredRoles.Any())
             {
                 var userRoles = user.Claims
