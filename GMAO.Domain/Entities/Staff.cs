@@ -18,9 +18,12 @@ namespace GMAO.Domain.Entities
         public string EmployeeNumber { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public AddressObj Address { get; set; }
+        public Address Address { get; set; }
         //public string Phone { get; set; }
         public string CellPhone { get; set; }
+        public StaffStatus Status { get; set; }
+        public List<string> ServiceZones { get; set; }
+        public List<Guid> ManagedCustomerIds { get; set; }
         public string Email { get; set; }
         public Guid RoleId { get; set; } = default!;
         public Role Role { get; set; } = default!;
@@ -43,9 +46,9 @@ namespace GMAO.Domain.Entities
             AddDomainEvent(new StaffCreatedEvent(id, tenantId, password, email));
         }
 
-        public ICollection<Client> ClientCommercials { get; set; } = new List<Client>();
+        public ICollection<Customer> ClientCommercials { get; set; } = new List<Customer>();
         public ICollection<Site> SiteCommercials { get; set; }
-        public ICollection<Event> QuotesFor { get; set; }
+        public ICollection<ServiceRequest> QuotesFor { get; set; }
         public ICollection<Site> OperationManagerForSites { get; set; }
         public ICollection<Site> Technician1ForSites { get; set; }
         public ICollection<Site> Technician2ForSites { get; set; }

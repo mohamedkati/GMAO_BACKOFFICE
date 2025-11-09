@@ -6,5 +6,10 @@ using System.Threading.Tasks;
 
 namespace GMAO.Domain.Enums
 {
-    public enum ContractType { Preventive, Corrective, Mixed }
+    public enum ContractType
+    {
+        Preventive,
+        Corrective,
+        Mixed
+    }
 }

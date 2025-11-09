@@ -5,6 +5,6 @@ namespace GMAO.Domain.Entities
     public class EventReason : BaseAuditableEntity
     {
         public string Label { get; set; }
-        public virtual ICollection<Event> Events { get; set; }
+        public virtual ICollection<ServiceRequest> Events { get; set; }
     }
 }

@@ -17,8 +17,6 @@ namespace GMAO.Domain.Entities
         public FileType FileType { get; set; }
         public bool InTmp { get; set; }
         public FileOrigin FileOrigin { get; set; }
-        public ICollection<Event> OriginFilesEvents { get; set; }
-        public ICollection<Event> ServiceOrderFileEvents { get; set; }
         public WorkOrder WorkOrder { get; set; }
         public Guid? WorkOrderId { get; set; }
         public WorkOrder WorkOrderAudioFile { get; set; }

@@ -27,7 +27,7 @@ namespace GMAO.Infrastructure.Persistance.Configurations
                 .IsRequired()
                 .HasMaxLength(100);
 
-            builder.OwnsOne<AddressObj>(s => s.Address, a =>
+            builder.OwnsOne<Address>(s => s.Address, a =>
             {
                 a.Property(ad => ad.FirstAddressLine)
                     .IsRequired(false)
@@ -66,11 +66,28 @@ namespace GMAO.Infrastructure.Persistance.Configurations
             //
             //  Lien entre TenantUser.UserId → Staffs(Id)
             //
+            builder.Property(s => s.Status).IsRequired().HasConversion<int>();
 
             builder.HasMany<TenantUser>(x=> x.Tenants)
              .WithOne(x=> x.User)
              .HasForeignKey(tu => tu.StaffId)
              .OnDelete(DeleteBehavior.NoAction);
+
+            // JSON columns for PostgreSQL
+            //builder.Property(s => s.ServiceZones).HasColumnType("jsonb");
+            //builder.Property(s => s.ManagedCustomerIds).HasColumnType("jsonb");
+
+            builder.Ignore(builder => builder.ServiceZones);
+            builder.Ignore(builder => builder.ManagedCustomerIds);
+
+            builder.HasIndex(s => s.Email).IsUnique();
+            builder.HasIndex(s => s.RoleId);
+            builder.HasIndex(x=> x.EmployeeNumber).IsUnique();
+            builder.HasIndex(s => s.Status);
+            builder.HasIndex(s => s.TenantId);
+            builder.Ignore(s => s.DomainEvents);
+
         }
     }
+
 }

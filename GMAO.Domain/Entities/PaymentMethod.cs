@@ -7,6 +7,6 @@ namespace GMAO.Domain.Entities
         public string Name { get; set; } = default!;
         public string Terms { get; set; } = default!;
 
-        public ICollection<Client> Clients { get; set; } = new List<Client>();  
+        public ICollection<Customer> Clients { get; set; } = new List<Customer>();  
     }
 }

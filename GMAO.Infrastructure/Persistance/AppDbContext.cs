@@ -7,6 +7,7 @@ using GMAO.Domain.Entities;
 using GMAO.Domain.Entities.Auth;
 using GMAO.Domain.Interfaces;
 using GMAO.Infrastructure.Persistance.Identity;
+using GMAO.Shared.Strings;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -19,7 +20,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-
+using Unit = GMAO.Domain.Entities.Unit;
 namespace GMAO.Infrastructure.Persistance
 {
     public class AppDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>, IAppDbContext, IUnitOfWork
@@ -38,15 +39,76 @@ namespace GMAO.Infrastructure.Persistance
 
         // Domaine
         public DbSet<Tenant> Tenants => Set<Tenant>();
-        public DbSet<Client> Clients => Set<Client>();
+        // ═══════════════════════════════════════════════════════════
+        // DBSETS - TOUTES LES 44 ENTITÉS
+        // ═══════════════════════════════════════════════════════════
+
+        // Customer Management
+        public DbSet<Customer> Customers => Set<Customer>();
+        public DbSet<PropertyGroup> PropertyGroups => Set<PropertyGroup>();
+        public DbSet<CustomerContact> CustomerContacts => Set<CustomerContact>();
+
+        // Property Management
         public DbSet<Site> Sites => Set<Site>();
-        public DbSet<AssetType> AssetTypes => Set<AssetType>();
+        public DbSet<Unit> Units => Set<Unit>();
+        public DbSet<Occupant> Occupants => Set<Occupant>();
+
+        // Asset Management
         public DbSet<Asset> Assets => Set<Asset>();
+        public DbSet<AssetCategory> AssetCategories => Set<AssetCategory>();
+        public DbSet<Warranty> Warranties => Set<Warranty>();
+        public DbSet<MaintenancePlan> MaintenancePlans => Set<MaintenancePlan>();
+        public DbSet<MaintenanceTask> MaintenanceTasks => Set<MaintenanceTask>();
+
+        // Service Requests
+        public DbSet<ServiceRequest> ServiceRequests => Set<ServiceRequest>();
+        public DbSet<QuoteRequest> QuoteRequests => Set<QuoteRequest>();
+        //public DbSet<QuoteRequestItem> QuoteRequestItems => Set<QuoteRequestItem>();
+
+        // Work Orders
         public DbSet<WorkOrder> WorkOrders => Set<WorkOrder>();
-        public DbSet<WorkOrderLog> WorkOrderLogs => Set<WorkOrderLog>();
+        public DbSet<TimeEntry> TimeEntries => Set<TimeEntry>();
+        public DbSet<UsedPart> UsedParts => Set<UsedPart>();
+        public DbSet<WorkOrderCompletion> WorkOrderCompletions => Set<WorkOrderCompletion>();
+        public DbSet<WorkOrderTask> WorkOrderTasks => Set<WorkOrderTask>();
+
+        // Quotes
         public DbSet<Quote> Quotes => Set<Quote>();
         public DbSet<QuoteLine> QuoteLines => Set<QuoteLine>();
+        //public DbSet<QuoteApproval> QuoteApprovals => Set<QuoteApproval>();
+
+        // Purchase Orders
+        public DbSet<PurchaseOrder> PurchaseOrders => Set<PurchaseOrder>();
+        public DbSet<PurchaseOrderLine> PurchaseOrderLines => Set<PurchaseOrderLine>();
+        public DbSet<PurchaseOrderReceipt> PurchaseOrderReceipts => Set<PurchaseOrderReceipt>();
+
+        // Inventory
         public DbSet<Supplier> Suppliers => Set<Supplier>();
+        public DbSet<SupplierCatalogItem> SupplierCatalogItems => Set<SupplierCatalogItem>();
+        public DbSet<InventoryItem> InventoryItems => Set<InventoryItem>();
+        public DbSet<InventoryCategory> InventoryCategories => Set<InventoryCategory>();
+        public DbSet<InventorySupplier> InventorySuppliers => Set<InventorySupplier>();
+        public DbSet<StockTransaction> StockTransactions => Set<StockTransaction>();
+
+        // Invoicing
+        public DbSet<Invoice> Invoices => Set<Invoice>();
+        public DbSet<InvoiceLine> InvoiceLines => Set<InvoiceLine>();
+        public DbSet<InvoiceShare> InvoiceShares => Set<InvoiceShare>();
+        public DbSet<Payment> Payments => Set<Payment>();
+        public DbSet<MaintenanceBudget> MaintenanceBudgets => Set<MaintenanceBudget>();
+
+        // Contracts
+        public DbSet<ServiceContract> ServiceContracts => Set<ServiceContract>();
+        public DbSet<ContractPricing> ContractPricings => Set<ContractPricing>();
+        public DbSet<ContractConsumption> ContractConsumptions => Set<ContractConsumption>();
+
+        // Staff
+        public DbSet<Staff> Staff => Set<Staff>();
+        public DbSet<Technician> Technicians => Set<Technician>();
+        public DbSet<Skill> Skills => Set<Skill>();
+        public DbSet<TechnicianSkill> TechnicianSkills => Set<TechnicianSkill>();
+        public DbSet<TechnicianMetrics> TechnicianMetrics => Set<TechnicianMetrics>();
+
         //public DbSet<Part> Parts => Set<Part>();
         //public DbSet<PurchaseOrder> PurchaseOrders => Set<PurchaseOrder>();
         //public DbSet<PurchaseOrderLine> PurchaseOrderLines => Set<PurchaseOrderLine>();
@@ -123,9 +185,9 @@ namespace GMAO.Infrastructure.Persistance
             //    .HasForeignKey(tu => tu.UserId)
             //    .OnDelete(DeleteBehavior.Cascade);
 
-            
 
-           // app user id must be the same as staff id.
+
+            // app user id must be the same as staff id.
             builder.Entity<Staff>()
                .HasOne<ApplicationUser>()
                .WithMany()
@@ -169,7 +231,7 @@ namespace GMAO.Infrastructure.Persistance
                     // Soft Delete
                     entry.State = EntityState.Modified;
                     auditable.IsDeleted = true;
-                    auditable.DeletedOn = _datetimeService.UtcNow;
+                    auditable.DeletedAt = _datetimeService.UtcNow;
                     auditable.DeletedBy = _authenticatedUser.IsAuthenticated() ? _authenticatedUser.UserId : Guid.Empty; // TODO: Récupérer l'ID de l'utilisateur courant
                 }
 
@@ -239,6 +301,45 @@ namespace GMAO.Infrastructure.Persistance
             var final = Expression.AndAlso(deletedFilter, tenantFilter);
             return Expression.Lambda(final, parameter);
         }
+
+        /// <summary>
+        /// Configure les conventions de nommage pour PostgreSQL (snake_case)
+        /// </summary>
+        /// <param name="modelBuilder"></param>
+        private void ConfigurePostgreSqlConventions(ModelBuilder modelBuilder)
+        {
+            // Convention: snake_case pour les noms de tables et colonnes
+            foreach (var entity in modelBuilder.Model.GetEntityTypes())
+            {
+                // Tables en snake_case
+                entity.SetTableName(entity.GetTableName()?.ToSnakeCase());
+
+                // Colonnes en snake_case
+                foreach (var property in entity.GetProperties())
+                {
+                    property.SetColumnName(property.GetColumnName().ToSnakeCase());
+                }
+
+                // Clés en snake_case
+                foreach (var key in entity.GetKeys())
+                {
+                    key.SetName(key.GetName()?.ToSnakeCase());
+                }
+
+                // Foreign keys en snake_case
+                foreach (var fk in entity.GetForeignKeys())
+                {
+                    fk.SetConstraintName(fk.GetConstraintName()?.ToSnakeCase());
+                }
+
+                // Index en snake_case
+                foreach (var index in entity.GetIndexes())
+                {
+                    index.SetDatabaseName(index.GetDatabaseName()?.ToSnakeCase());
+                }
+            }
+        }
+
         #endregion
     }
 }

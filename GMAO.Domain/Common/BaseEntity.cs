@@ -16,7 +16,7 @@ namespace GMAO.Domain.Common
         public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 
         public bool IsDeleted { get; set; }
-        public DateTime? DeletedOn { get; set; }
+        public DateTime? DeletedAt { get; set; }
         public Guid? DeletedBy { get; set; }
 
         protected void AddDomainEvent(IDomainEvent eventItem) => _domainEvents.Add(eventItem);

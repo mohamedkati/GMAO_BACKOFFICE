@@ -8,10 +8,12 @@ namespace GMAO.Domain.Enums
 {
     public enum WorkOrderType
     {
-        Corrective = 0,
-        Preventive = 1,
-        Inspection = 2,
-        Installation = 3
+        Corrective = 1,
+        Preventive = 2,
+        Inspection = 3,
+        Installation = 4,
+        Emergency = 5,
+        Project = 6
     }
 
 }

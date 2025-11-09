@@ -15,7 +15,8 @@ namespace GMAO.Domain.Enums
         WaitingForParts = 4,
         WaitingForQuote = 5,
         Completed = 6,
-        Closed = 7
+        Closed = 7,
+        Cancelled = 8,
+        OnHold = 9,
     }
-
 }
