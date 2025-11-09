@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace GMAO.Domain.ValueObjects
 {
+
     public class Address : ValueObject
     {
         public string FirstAddressLine { get; set; }

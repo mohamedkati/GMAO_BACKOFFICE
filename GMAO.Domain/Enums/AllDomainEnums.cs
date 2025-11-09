@@ -2,7 +2,48 @@
 global using GMAO.Domain.Enums;
 namespace GMAO.Domain.Enums
 {
+    public enum PropertyGroupType
+    {
+        PropertyManagementCompany = 1,  // Société de gestion immobilière
+        SyndicGroup = 2,                 // Groupe de syndics
+        RealEstateInvestor = 3,          // Investisseur immobilier
+        PublicHousing = 4,               // Bailleur social
+        Corporate = 5,                   // Entreprise (patrimoine immobilier)
+        FamilyOffice = 6                 // Family office
+    }
 
+    public enum PropertyGroupStatus
+    {
+        Active = 1,
+        Prospect = 2,
+        Inactive = 3,
+        Suspended = 4,
+        Terminated = 5
+    }
+
+    public enum LegalForm
+    {
+        SAS = 1,        // Société par Actions Simplifiée
+        SARL = 2,       // Société à Responsabilité Limitée
+        SA = 3,         // Société Anonyme
+        SCI = 4,        // Société Civile Immobilière
+        EURL = 5,       // Entreprise Unipersonnelle à Responsabilité Limitée
+        EI = 6,         // Entreprise Individuelle
+        Association = 7,
+        PublicEntity = 8
+    }
+
+    public enum ContactRole
+    {
+        GeneralManager = 1,          // Directeur Général
+        OperationsManager = 2,       // Directeur des Opérations
+        CommercialManager = 3,       // Directeur Commercial
+        AccountingManager = 4,       // Responsable Comptabilité
+        TechnicalManager = 5,        // Responsable Technique
+        CustomerServiceManager = 6,  // Responsable Service Client
+        LegalManager = 7,            // Responsable Juridique
+        Assistant = 8                // Assistant(e)
+    }
     // ═══════════════════════════════════════════════════════════════
     // CUSTOMER MANAGEMENT ENUMS
     // ═══════════════════════════════════════════════════════════════
