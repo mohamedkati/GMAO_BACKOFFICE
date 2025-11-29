@@ -121,6 +121,10 @@ namespace GMAO.Infrastructure.Persistance
         public DbSet<TenantUser> TenantUsers => Set<TenantUser>();
         public DbSet<Staff> Staffs => Set<Staff>();
 
+
+        // OTHERS
+        public DbSet<PaymentMethod> PaymentMethods => Set<PaymentMethod>();
+
         private IDbContextTransaction? _currentTransaction;
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -199,8 +203,8 @@ namespace GMAO.Infrastructure.Persistance
             // TODO apply global query filter for soft delete
             var entities = builder.Model.GetEntityTypes()
                 .Where(entity => typeof(BaseAuditableEntity).IsAssignableFrom(entity.ClrType));
-                
-            foreach(var entityType in entities)
+
+            foreach (var entityType in entities)
             {
                 entityType.SetQueryFilter(BuildTenantAndNotDeletedFilter(entityType.ClrType));
             }
@@ -269,7 +273,7 @@ namespace GMAO.Infrastructure.Persistance
 
             var deletedFilter = Expression.Equal(isDeleted, Expression.Constant(false));
             var tenantFilter = Expression.Equal(tenantId, Expression.Constant(_authenticatedUser.TenantId));
-            if(_authenticatedUser.TenantId == Guid.Empty)
+            if (_authenticatedUser.TenantId == Guid.Empty)
             {
                 return Expression.Lambda(deletedFilter, parameter);
             }

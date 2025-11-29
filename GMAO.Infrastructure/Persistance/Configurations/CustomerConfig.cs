@@ -125,6 +125,13 @@ namespace GMAO.Infrastructure.Persistance.Configurations
             builder.Property(c => c.Comment)
                 .HasMaxLength(1500);
 
+
+            builder.HasOne(c => c.PaymentMethod)
+                .WithMany(c => c.Clients)
+                .HasForeignKey(c => c.PaymentMethodId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+
         }
     }
 }
