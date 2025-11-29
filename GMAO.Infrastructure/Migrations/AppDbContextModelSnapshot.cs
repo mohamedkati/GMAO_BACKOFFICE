@@ -1587,6 +1587,46 @@ namespace GMAO.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("AccountingContactEmail")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("AccountingContactName")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("AccountingContactPhone")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasDefaultValue("");
+
+                    b.Property<bool>("AutoRenewalFrameworkContract")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("CommercialNotes")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("CompanyRegistrationNumber")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasDefaultValue("");
+
+                    b.Property<bool>("ConsolidatedBilling")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -1600,10 +1640,27 @@ namespace GMAO.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)")
+                        .HasDefaultValue("");
+
+                    b.Property<DateTime?>("FrameworkContractEndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FrameworkContractReference")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasDefaultValue("");
+
+                    b.Property<DateTime?>("FrameworkContractStartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("InternalNotes")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
                         .HasDefaultValue("");
 
                     b.Property<bool>("IsDeleted")
@@ -1615,6 +1672,48 @@ namespace GMAO.Infrastructure.Migrations
                     b.Property<Guid?>("LastModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime?>("LastStatisticsUpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("LegalForm")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LegalName")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("MainContactEmail")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("MainContactMobile")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("MainContactName")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("MainContactPhone")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("MainContactPosition")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasDefaultValue("");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
@@ -1622,14 +1721,238 @@ namespace GMAO.Infrastructure.Migrations
                         .HasColumnType("nvarchar(200)")
                         .HasDefaultValue("");
 
+                    b.Property<int>("PaymentTermsDays")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(30);
+
+                    b.Property<string>("PreferredPaymentMethod")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("Reference")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("SIREN")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(9)
+                        .HasColumnType("nvarchar(9)")
+                        .HasDefaultValue("")
+                        .IsFixedLength(false);
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("TotalAnnualRevenue")
+                        .ValueGeneratedOnAdd()
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)")
+                        .HasDefaultValue(0m);
+
+                    b.Property<int>("TotalCustomers")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<int>("TotalSites")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<int>("TotalUnits")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<string>("VATNumber")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasDefaultValue("");
+
+                    b.Property<decimal?>("VolumeDiscountPercent")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FrameworkContractEndDate")
+                        .HasDatabaseName("ix_property_groups_contract_end_date");
+
+                    b.HasIndex("MainContactEmail")
+                        .HasDatabaseName("ix_property_groups_main_contact_email");
+
+                    b.HasIndex("Name")
+                        .HasDatabaseName("ix_property_groups_name");
+
+                    b.HasIndex("Reference")
+                        .IsUnique()
+                        .HasDatabaseName("ix_property_groups_reference");
+
+                    b.HasIndex("SIREN")
+                        .HasDatabaseName("ix_property_groups_siren");
+
+                    b.HasIndex("Status")
+                        .HasDatabaseName("ix_property_groups_status");
+
+                    b.HasIndex("TenantId")
+                        .HasDatabaseName("ix_property_groups_tenant_id");
+
+                    b.HasIndex("Type")
+                        .HasDatabaseName("ix_property_groups_type");
+
+                    b.ToTable("property_groups", (string)null);
+                });
+
+            modelBuilder.Entity("GMAO.Domain.Entities.PropertyGroupContact", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Department")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("Fax")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasDefaultValue("");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPrimary")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("Mobile")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("Notes")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)")
+                        .HasDefaultValue("");
+
+                    b.Property<int>("PersonType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Phone")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("Position")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasDefaultValue("");
+
+                    b.Property<int>("PreferredContactMethod")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("PropertyGroupId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("ReceivesAlerts")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("ReceivesInvoices")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("ReceivesReports")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
+
                     b.Property<Guid>("TenantId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TenantId");
+                    b.HasIndex("Email")
+                        .HasDatabaseName("ix_property_group_contacts_email");
 
-                    b.ToTable("property_groups", (string)null);
+                    b.HasIndex("PropertyGroupId")
+                        .HasDatabaseName("ix_property_group_contacts_property_group_id");
+
+                    b.HasIndex("Role")
+                        .HasDatabaseName("ix_property_group_contacts_role");
+
+                    b.HasIndex("TenantId")
+                        .HasDatabaseName("ix_property_group_contacts_tenant_id");
+
+                    b.HasIndex("PropertyGroupId", "IsPrimary")
+                        .HasDatabaseName("ix_property_group_contacts_group_primary");
+
+                    b.ToTable("property_group_contacts", (string)null);
                 });
 
             modelBuilder.Entity("GMAO.Domain.Entities.PurchaseOrder", b =>
@@ -2730,7 +3053,7 @@ namespace GMAO.Infrastructure.Migrations
 
                     b.HasIndex("TenantId");
 
-                    b.ToTable("Staff");
+                    b.ToTable("Staffs", (string)null);
                 });
 
             modelBuilder.Entity("GMAO.Domain.Entities.StockTransaction", b =>
@@ -3123,19 +3446,11 @@ namespace GMAO.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasDefaultValue("");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("Currency")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)")
-                        .HasDefaultValue("");
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
@@ -3143,14 +3458,53 @@ namespace GMAO.Infrastructure.Migrations
                     b.Property<Guid?>("DeletedBy")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)")
+                        .HasDefaultValue("");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Logo")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)")
+                        .HasDefaultValue("");
+
                     b.Property<string>("Name")
                         .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("Subdomain")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("Website")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)")
@@ -4689,6 +5043,137 @@ namespace GMAO.Infrastructure.Migrations
                     b.Navigation("Method");
                 });
 
+            modelBuilder.Entity("GMAO.Domain.Entities.PropertyGroup", b =>
+                {
+                    b.OwnsOne("GMAO.Domain.ValueObjects.Address", "HeadquartersAddress", b1 =>
+                        {
+                            b1.Property<Guid>("PropertyGroupId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("City")
+                                .IsRequired()
+                                .ValueGeneratedOnAdd()
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)")
+                                .HasDefaultValue("")
+                                .HasColumnName("headquarters_city");
+
+                            b1.Property<string>("Country")
+                                .IsRequired()
+                                .ValueGeneratedOnAdd()
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)")
+                                .HasDefaultValue("")
+                                .HasColumnName("headquarters_country");
+
+                            b1.Property<string>("FirstAddressLine")
+                                .IsRequired()
+                                .ValueGeneratedOnAdd()
+                                .HasMaxLength(200)
+                                .HasColumnType("nvarchar(200)")
+                                .HasDefaultValue("")
+                                .HasColumnName("headquarters_address_line1");
+
+                            b1.Property<string>("PostalCode")
+                                .IsRequired()
+                                .ValueGeneratedOnAdd()
+                                .HasMaxLength(20)
+                                .HasColumnType("nvarchar(20)")
+                                .HasDefaultValue("")
+                                .HasColumnName("headquarters_postal_code");
+
+                            b1.Property<string>("SecondAddressLine")
+                                .IsRequired()
+                                .ValueGeneratedOnAdd()
+                                .HasMaxLength(200)
+                                .HasColumnType("nvarchar(200)")
+                                .HasDefaultValue("")
+                                .HasColumnName("headquarters_address_line2");
+
+                            b1.Property<string>("Street")
+                                .IsRequired()
+                                .ValueGeneratedOnAdd()
+                                .HasMaxLength(200)
+                                .HasColumnType("nvarchar(200)")
+                                .HasDefaultValue("")
+                                .HasColumnName("headquarters_street");
+
+                            b1.HasKey("PropertyGroupId");
+
+                            b1.ToTable("property_groups");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PropertyGroupId");
+                        });
+
+                    b.OwnsOne("GMAO.Domain.ValueObjects.GroupPricingCoefficients", "GroupPricingCoefficients", b1 =>
+                        {
+                            b1.Property<Guid>("PropertyGroupId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<decimal?>("EmergencyCalloutFee")
+                                .HasPrecision(18, 2)
+                                .HasColumnType("decimal(18,2)")
+                                .HasColumnName("group_emergency_callout_fee");
+
+                            b1.Property<decimal>("EquipmentCoefficient")
+                                .HasPrecision(18, 2)
+                                .HasColumnType("decimal(18,2)")
+                                .HasColumnName("group_equipment_coefficient");
+
+                            b1.Property<decimal>("LaborCoefficient")
+                                .HasPrecision(18, 2)
+                                .HasColumnType("decimal(18,2)")
+                                .HasColumnName("group_labor_coefficient");
+
+                            b1.Property<decimal>("MaterialCoefficient")
+                                .HasPrecision(18, 2)
+                                .HasColumnType("decimal(18,2)")
+                                .HasColumnName("group_material_coefficient");
+
+                            b1.Property<int>("MinimumAnnualRevenue")
+                                .HasColumnType("int")
+                                .HasColumnName("group_minimum_annual_revenue");
+
+                            b1.Property<decimal?>("MonthlyMaintenanceFee")
+                                .HasPrecision(18, 2)
+                                .HasColumnType("decimal(18,2)")
+                                .HasColumnName("group_monthly_maintenance_fee");
+
+                            b1.Property<decimal>("SubcontractorCoefficient")
+                                .HasPrecision(18, 2)
+                                .HasColumnType("decimal(18,2)")
+                                .HasColumnName("group_subcontractor_coefficient");
+
+                            b1.Property<decimal>("VolumeDiscountPercent")
+                                .HasPrecision(18, 2)
+                                .HasColumnType("decimal(18,2)")
+                                .HasColumnName("group_volume_discount_percent");
+
+                            b1.HasKey("PropertyGroupId");
+
+                            b1.ToTable("property_groups");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PropertyGroupId");
+                        });
+
+                    b.Navigation("GroupPricingCoefficients");
+
+                    b.Navigation("HeadquartersAddress");
+                });
+
+            modelBuilder.Entity("GMAO.Domain.Entities.PropertyGroupContact", b =>
+                {
+                    b.HasOne("GMAO.Domain.Entities.PropertyGroup", "PropertyGroup")
+                        .WithMany("Contacts")
+                        .HasForeignKey("PropertyGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PropertyGroup");
+                });
+
             modelBuilder.Entity("GMAO.Domain.Entities.PurchaseOrder", b =>
                 {
                     b.HasOne("GMAO.Domain.Entities.Quote", "Quote")
@@ -5059,7 +5544,7 @@ namespace GMAO.Infrastructure.Migrations
 
                             b1.HasKey("StaffId");
 
-                            b1.ToTable("Staff");
+                            b1.ToTable("Staffs");
 
                             b1.WithOwner()
                                 .HasForeignKey("StaffId");
@@ -5192,6 +5677,204 @@ namespace GMAO.Infrastructure.Migrations
                     b.Navigation("Skill");
 
                     b.Navigation("Technician");
+                });
+
+            modelBuilder.Entity("GMAO.Domain.Entities.Tenant", b =>
+                {
+                    b.OwnsOne("GMAO.Domain.ValueObjects.Address", "Address", b1 =>
+                        {
+                            b1.Property<Guid>("TenantId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("City")
+                                .IsRequired()
+                                .ValueGeneratedOnAdd()
+                                .HasMaxLength(30)
+                                .HasColumnType("nvarchar(30)")
+                                .HasDefaultValue("");
+
+                            b1.Property<string>("Country")
+                                .IsRequired()
+                                .ValueGeneratedOnAdd()
+                                .HasMaxLength(30)
+                                .HasColumnType("nvarchar(30)")
+                                .HasDefaultValue("");
+
+                            b1.Property<string>("FirstAddressLine")
+                                .IsRequired()
+                                .ValueGeneratedOnAdd()
+                                .HasMaxLength(200)
+                                .HasColumnType("nvarchar(200)")
+                                .HasDefaultValue("");
+
+                            b1.Property<string>("PostalCode")
+                                .IsRequired()
+                                .ValueGeneratedOnAdd()
+                                .HasMaxLength(10)
+                                .HasColumnType("nvarchar(10)")
+                                .HasDefaultValue("");
+
+                            b1.Property<string>("SecondAddressLine")
+                                .IsRequired()
+                                .ValueGeneratedOnAdd()
+                                .HasMaxLength(200)
+                                .HasColumnType("nvarchar(200)")
+                                .HasDefaultValue("");
+
+                            b1.Property<string>("Street")
+                                .IsRequired()
+                                .ValueGeneratedOnAdd()
+                                .HasMaxLength(250)
+                                .HasColumnType("nvarchar(250)")
+                                .HasDefaultValue("");
+
+                            b1.HasKey("TenantId");
+
+                            b1.ToTable("Tenants");
+
+                            b1.WithOwner()
+                                .HasForeignKey("TenantId");
+                        });
+
+                    b.OwnsOne("GMAO.Domain.ValueObjects.TenantFeatures", "Features", b1 =>
+                        {
+                            b1.Property<Guid>("TenantId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<bool?>("AdvancedReports")
+                                .HasColumnType("bit");
+
+                            b1.Property<bool?>("Analytics")
+                                .HasColumnType("bit");
+
+                            b1.Property<bool?>("ApiAccess")
+                                .HasColumnType("bit");
+
+                            b1.Property<bool?>("CustomBranding")
+                                .HasColumnType("bit");
+
+                            b1.Property<bool?>("MobileApp")
+                                .HasColumnType("bit");
+
+                            b1.Property<bool?>("Notifications")
+                                .HasColumnType("bit");
+
+                            b1.Property<bool?>("Realtime")
+                                .HasColumnType("bit");
+
+                            b1.HasKey("TenantId");
+
+                            b1.ToTable("Tenants");
+
+                            b1.WithOwner()
+                                .HasForeignKey("TenantId");
+                        });
+
+                    b.OwnsOne("GMAO.Domain.ValueObjects.TenantLimits", "TenantLimits", b1 =>
+                        {
+                            b1.Property<Guid>("TenantId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<int?>("Storage")
+                                .HasColumnType("int");
+
+                            b1.Property<int?>("Users")
+                                .HasColumnType("int");
+
+                            b1.Property<int?>("WorkOrders")
+                                .HasColumnType("int");
+
+                            b1.HasKey("TenantId");
+
+                            b1.ToTable("Tenants");
+
+                            b1.WithOwner()
+                                .HasForeignKey("TenantId");
+                        });
+
+                    b.OwnsOne("GMAO.Domain.ValueObjects.TenantSettings", "Settings", b1 =>
+                        {
+                            b1.Property<Guid>("TenantId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Currency")
+                                .ValueGeneratedOnAdd()
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)")
+                                .HasDefaultValue("");
+
+                            b1.Property<string>("DateFormat")
+                                .ValueGeneratedOnAdd()
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)")
+                                .HasDefaultValue("");
+
+                            b1.Property<string>("Language")
+                                .ValueGeneratedOnAdd()
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)")
+                                .HasDefaultValue("");
+
+                            b1.Property<int?>("Theme")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("TimeFormat")
+                                .ValueGeneratedOnAdd()
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)")
+                                .HasDefaultValue("");
+
+                            b1.Property<string>("Timezone")
+                                .ValueGeneratedOnAdd()
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)")
+                                .HasDefaultValue("");
+
+                            b1.Property<int?>("WeekStartsOn")
+                                .HasColumnType("int");
+
+                            b1.HasKey("TenantId");
+
+                            b1.ToTable("Tenants");
+
+                            b1.WithOwner()
+                                .HasForeignKey("TenantId");
+                        });
+
+                    b.OwnsOne("GMAO.Domain.ValueObjects.TenantSubscription", "Subscription", b1 =>
+                        {
+                            b1.Property<Guid>("TenantId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<DateTime?>("EndDate")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<int>("Plan")
+                                .HasColumnType("int");
+
+                            b1.Property<DateTime>("StartDate")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<int>("Status")
+                                .HasColumnType("int");
+
+                            b1.HasKey("TenantId");
+
+                            b1.ToTable("Tenants");
+
+                            b1.WithOwner()
+                                .HasForeignKey("TenantId");
+                        });
+
+                    b.Navigation("Address");
+
+                    b.Navigation("Features");
+
+                    b.Navigation("Settings");
+
+                    b.Navigation("Subscription");
+
+                    b.Navigation("TenantLimits");
                 });
 
             modelBuilder.Entity("GMAO.Domain.Entities.TimeEntry", b =>
@@ -5481,6 +6164,8 @@ namespace GMAO.Infrastructure.Migrations
 
             modelBuilder.Entity("GMAO.Domain.Entities.PropertyGroup", b =>
                 {
+                    b.Navigation("Contacts");
+
                     b.Navigation("Customers");
                 });
 

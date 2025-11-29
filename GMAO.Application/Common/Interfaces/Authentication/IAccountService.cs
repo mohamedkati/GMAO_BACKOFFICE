@@ -1,4 +1,5 @@
 ﻿using GMAO.Application.Features.Auth.Queries.Login.DTOs;
+using GMAO.Application.Features.me.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,5 +21,6 @@ namespace GMAO.Application.Common.Interfaces.Authentication
         Task<bool> ConfirmEmailAsync(string userId, string token);
         Task SendConfirmEmailAfterRegistrationAsync(string email, string password);
         Task RequestEmailConfirmAsync(string email);
+        Task<MeQueryDto> GetUserInfoAsync(Guid userId, Guid tenantId);
     }
 }

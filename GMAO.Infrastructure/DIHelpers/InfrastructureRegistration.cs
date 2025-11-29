@@ -17,6 +17,9 @@ using GMAO.Infrastructure.Services;
 using GMAO.Infrastructure.Services.Authentication;
 using GMAO.Application.Common.Interfaces.Infrastructure;
 using GMAO.Infrastructure.Infras;
+using GMAO.Infrastructure.Persistance.UnitOfWork;
+using GMAO.Application.Common.Interfaces.Repositories;
+using GMAO.Infrastructure.Persistance.Repositories;
 
 namespace GMAO.Infrastructure.DIHelpers
 {
@@ -46,16 +49,24 @@ namespace GMAO.Infrastructure.DIHelpers
 
         public static void ConfigureInfraServices(this IServiceCollection services, IConfiguration config)
         {
+            ConfigureRepositories(services);
             services.AddScoped<IDatetimeService, DatetimeService>();
             services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IAuthenticatedUser, AuthenticatedUser>();
             services.AddScoped<ITokenService, TokenService>();
         }
+        private static void ConfigureRepositories(this IServiceCollection services)
+        {
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped(typeof(IPropertyGroupRepository), typeof(PropertyGroupRepository));
+
+        }
         public static void ConfigureAppAuthenticationServices(this IServiceCollection services)
         {
-            services.AddScoped<IAppDbContext>(scp => scp.GetRequiredService<AppDbContext>());
+            //services.AddScoped<IAppDbContext>(scp => scp.GetRequiredService<AppDbContext>());
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
     }
 }

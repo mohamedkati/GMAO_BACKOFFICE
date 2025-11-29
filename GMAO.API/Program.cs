@@ -8,13 +8,19 @@ using GMAO.Application.DIExtensions;
 using GMAO.Application.Common.AppSettings;
 using GMAO.Infrastructure.Persistance.Seed;
 using GMAO.Application.Common.Behaviours;
+using GMAO.API.Configurations;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(cnf =>
+{
+    cnf.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
+    cnf.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
+});
 builder.Services.Configure<EmailSetting>(builder.Configuration.GetSection("MailSettings"));
 builder.Services.Configure<AppSetting>(builder.Configuration.GetSection(nameof(AppSetting)));
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection(nameof(JwtSettings)));
@@ -36,6 +42,19 @@ builder.Services.ConfigureAppAuthenticationServices();
 builder.Services.RegisterAuthentication(builder.Configuration);
 builder.Services.AddApplicationLayer();
 
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy("CorsPolicy", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000/login")
+              .AllowAnyMethod()
+              .AllowAnyHeader()
+              .AllowCredentials()
+                .SetIsOriginAllowed(origin => true) // ? Ajoutez cette ligne
+              .WithExposedHeaders("*"); ;
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -44,12 +63,14 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.MapSwagger();
 }
-
 await DbInitializer.SeedAsync(app.Services);
 
-app.UseMiddleware<ExceptionHandlerMiddelware>();
+app.UseCors("CorsPolicy");
 
+app.UseMiddleware<ExceptionHandlerMiddelware>();
+app.UseRouting();
 app.UseHttpsRedirection();
+
 app.UseAuthentication();
 app.UseAuthorization();
 

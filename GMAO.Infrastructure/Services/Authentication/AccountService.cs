@@ -1,11 +1,15 @@
-﻿using GMAO.Application.Common.AppSettings;
+﻿using AutoMapper;
+using GMAO.Application.Common.AppSettings;
 using GMAO.Application.Common.Exceptions;
 using GMAO.Application.Common.Interfaces;
 using GMAO.Application.Common.Interfaces.Authentication;
 using GMAO.Application.Common.Interfaces.Services;
 using GMAO.Application.Features.Auth.Queries.Login.DTOs;
+using GMAO.Application.Features.me.DTOs;
+using GMAO.Domain.Entities;
 using GMAO.Domain.Entities.Auth;
 using GMAO.Infrastructure.DIHelpers;
+using GMAO.Infrastructure.Persistance;
 using GMAO.Infrastructure.Persistance.Identity;
 using GMAO.Shared.Templates;
 using Microsoft.AspNetCore.Identity;
@@ -25,17 +29,19 @@ namespace GMAO.Infrastructure.Services.Authentication
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly ITokenService tokenService;
-        private readonly IAppDbContext _context;
         private readonly IEmailService _emailService;
+        private readonly IMapper _mapper;
+        public AppDbContext _context;
         private readonly AppSetting _appSetting;
 
-        public AccountService(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, ITokenService tokenService, IAppDbContext context, IOptions<AppSetting> appSetting, IEmailService emailService)
+        public AccountService(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, ITokenService tokenService, AppDbContext context, IOptions<AppSetting> appSetting, IEmailService emailService, IMapper mapper)
         {
             this._userManager = userManager;
             this._roleManager = roleManager;
             this.tokenService = tokenService;
             this._context = context;
             this._emailService = emailService;
+            this._mapper = mapper;
             this._appSetting = appSetting.Value;
         }
         public Task<bool> ConfirmPhoneNumberAsync(string userId, string token, string checkNumber)
@@ -58,14 +64,14 @@ namespace GMAO.Infrastructure.Services.Authentication
             {
                 throw new AppValidationException(new Dictionary<string, string[]>() { { "credentials", new[] { "Invalid credentials !" } } });
             }
-            var tenant = await _context.SetEntity<TenantUser>().FirstOrDefaultAsync(tu => tu.UserId == user.Id);
+            var tenant = await _context.TenantUsers.FirstOrDefaultAsync(tu => tu.UserId == user.Id);
             if (tenant is null)
             {
                 throw new AppValidationException(new Dictionary<string, string[]>() { { "tenant", new[] { "No tenant assigned to this user !" } } });
             }
 
             var roles = await _userManager.GetRolesAsync(user);
-            var domainPermissions = await _context.SetEntity<TenantUser>()
+            var domainPermissions = await _context.TenantUsers
                 .Include(x => x.Role)
                 .ThenInclude(x => x.Permissions)
                 .Where(t => t.Id == tenant.Id)
@@ -73,7 +79,7 @@ namespace GMAO.Infrastructure.Services.Authentication
                 .Select(x => x.Code)
                 .ToListAsync();
 
-            var domainRoles = await _context.SetEntity<TenantUser>().Include(x => x.Role)
+            var domainRoles = await _context.TenantUsers.Include(x => x.Role)
                 .Where(t => t.Id == tenant.Id)
                 .Select(x => x.Role.Name)
                 .ToListAsync();
@@ -341,6 +347,43 @@ namespace GMAO.Infrastructure.Services.Authentication
             return verificationUri;
         }
 
+        public async Task<MeQueryDto> GetUserInfoAsync(Guid userId, Guid tenantId)
+        {
+            var user = await _context.Staffs.FirstAsync(x => x.Id == userId && x.TenantId == tenantId);
+            var roleName = await _context.TenantUsers
+                .Include(x => x.Role)
+                .Where(x => x.UserId == userId && x.TenantId == tenantId)
+                .Select(x => x.Role.Name)
+                .FirstAsync();
+            var permissions = await _context.TenantUsers
+                .Include(x => x.Role)
+                .ThenInclude(x => x.Permissions)
+                .Where(t => t.UserId == userId && t.TenantId == tenantId)
+                .SelectMany(x => x.Role.Permissions)
+                .Select(x => x.Code)
+                .ToListAsync();
 
+            var tenant = await _context.Tenants.FirstAsync(t => t.Id == tenantId);
+
+            return new MeQueryDto()
+            {
+                User = new MyInfoDto()
+                {
+                    Phone = user.CellPhone,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    UserId = user.Id,
+                    Role = roleName,
+                    Permissions = permissions,
+                    TenantId = tenant.Id,
+                    EmailVerified = true,
+                    CreatedAt = user.CreatedAt,
+                    UpdatedAt = user.LastModifiedAt,
+                    Status = 0,
+                },
+                Tenant = _mapper.Map<TenantDto>(tenant)
+            };
+        }
     }
 }

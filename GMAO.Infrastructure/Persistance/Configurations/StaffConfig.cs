@@ -15,6 +15,7 @@ namespace GMAO.Infrastructure.Persistance.Configurations
     {
         public void Configure(EntityTypeBuilder<Staff> builder)
         {
+            builder.ToTable("Staffs");
             builder.Property(s => s.EmployeeNumber)
                 .IsRequired()
                 .HasMaxLength(50);

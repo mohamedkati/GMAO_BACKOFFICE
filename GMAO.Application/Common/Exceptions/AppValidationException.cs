@@ -27,10 +27,10 @@ namespace GMAO.Application.Common.Exceptions
               .GroupBy(e => e.PropertyName, e => e.ErrorMessage)
               .ToDictionary(g => g.Key, g => g.ToArray());
         }
-        public AppValidationException(Dictionary<string, string[]> erros)
+        public AppValidationException(Dictionary<string, string[]> errors)
            : this()
         {
-            Errors = erros;
+            Errors = errors;
         }
     }
 }

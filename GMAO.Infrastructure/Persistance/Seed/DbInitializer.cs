@@ -18,6 +18,7 @@ namespace GMAO.Infrastructure.Persistance.Seed
     {
         public static async Task SeedAsync(IServiceProvider services)
         {
+            return; // Disable seeding for now
             using var scope = services.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
@@ -82,8 +83,8 @@ namespace GMAO.Infrastructure.Persistance.Seed
                 {
                     Id = Guid.NewGuid(),
                     Name = "TechMaint Services",
-                    Country = "Maroc",
-                    Currency = "MAD"
+                    //Country = "Maroc",
+                    //Currency = "MAD"
                 };
                 context.Tenants.Add(tenant);
                 await context.SaveChangesAsync();

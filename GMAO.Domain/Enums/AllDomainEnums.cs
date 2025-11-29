@@ -236,7 +236,7 @@ namespace GMAO.Domain.Enums
     // WORK ORDER ENUMS
     // ═══════════════════════════════════════════════════════════════
 
- 
+
 
     public enum WorkOrderScope
     {
@@ -282,7 +282,7 @@ namespace GMAO.Domain.Enums
     // QUOTE ENUMS
     // ═══════════════════════════════════════════════════════════════
 
- 
+
 
     public enum QuoteItemType
     {
@@ -468,4 +468,29 @@ namespace GMAO.Domain.Enums
         Master = 5
     }
 
+
+    // ===============================================================
+    // TENANT MANAGEMENT ENUMS
+    // ===============================================================
+    public enum SubscriptionPlan
+    {
+        Free,
+        Starter,
+        Professional,
+        Enterprise
+    }
+    public enum ThemeMode
+    {
+        Light,
+        Dark,
+        System
+    }
+
+    public enum SubscriptionStatus
+    {
+        Active,
+        Inactive,
+        Cancelled,
+        Expired
+    }
 }

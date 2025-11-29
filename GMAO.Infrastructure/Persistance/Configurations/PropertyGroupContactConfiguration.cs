@@ -107,6 +107,9 @@ namespace GMAO.Infrastructure.Persistance.Configurations
 
             builder.Ignore(c => c.FullName);
             builder.Ignore(c => c.DomainEvents);
+
+
         }
+
     }
 }

@@ -23,7 +23,7 @@ using System.Threading.Tasks;
 using Unit = GMAO.Domain.Entities.Unit;
 namespace GMAO.Infrastructure.Persistance
 {
-    public class AppDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>, IAppDbContext, IUnitOfWork
+    public class AppDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
     {
         private readonly IDomainEventDispatcher _mediatorDispatcher;
         private readonly IAuthenticatedUser _authenticatedUser;
@@ -35,7 +35,6 @@ namespace GMAO.Infrastructure.Persistance
             this._authenticatedUser = authenticatedUser;
             this._datetimeService = datetimeService;
         }
-        public DbSet<T> SetEntity<T>() where T : BaseEntity<Guid> => Set<T>();
 
         // Domaine
         public DbSet<Tenant> Tenants => Set<Tenant>();
@@ -46,6 +45,7 @@ namespace GMAO.Infrastructure.Persistance
         // Customer Management
         public DbSet<Customer> Customers => Set<Customer>();
         public DbSet<PropertyGroup> PropertyGroups => Set<PropertyGroup>();
+        public DbSet<PropertyGroupContact> PropertyGroupsContacts => Set<PropertyGroupContact>();
         public DbSet<CustomerContact> CustomerContacts => Set<CustomerContact>();
 
         // Property Management
@@ -103,7 +103,7 @@ namespace GMAO.Infrastructure.Persistance
         public DbSet<ContractConsumption> ContractConsumptions => Set<ContractConsumption>();
 
         // Staff
-        public DbSet<Staff> Staff => Set<Staff>();
+        //public DbSet<Staff> Staff => Set<Staff>();
         public DbSet<Technician> Technicians => Set<Technician>();
         public DbSet<Skill> Skills => Set<Skill>();
         public DbSet<TechnicianSkill> TechnicianSkills => Set<TechnicianSkill>();
@@ -197,12 +197,13 @@ namespace GMAO.Infrastructure.Persistance
 
             // TODO APPLY query filter on tenantId and inject currentTenantId
             // TODO apply global query filter for soft delete
-            builder.Model.GetEntityTypes()
-                .Where(entity => typeof(BaseEntity<>).IsAssignableFrom(entity.ClrType))
-                .ToList()
-                .ForEach(x => x.SetQueryFilter(BuildTenantAndNotDeletedFilter(x.ClrType)));
-
-
+            var entities = builder.Model.GetEntityTypes()
+                .Where(entity => typeof(BaseAuditableEntity).IsAssignableFrom(entity.ClrType));
+                
+            foreach(var entityType in entities)
+            {
+                entityType.SetQueryFilter(BuildTenantAndNotDeletedFilter(entityType.ClrType));
+            }
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -219,6 +220,7 @@ namespace GMAO.Infrastructure.Persistance
                     auditable.CreatedAt = _datetimeService.UtcNow;
                     if (auditable.Id == Guid.Empty)
                         auditable.Id = Guid.NewGuid();
+                    auditable.TenantId = _authenticatedUser.TenantId;
                     auditable.CreatedBy = _authenticatedUser.IsAuthenticated() ? _authenticatedUser.UserId : Guid.Empty; // TODO: Récupérer l'ID de l'utilisateur courant
                 }
                 else if (entry.State == EntityState.Modified)
@@ -257,36 +259,6 @@ namespace GMAO.Infrastructure.Persistance
             return result;
         }
 
-        public async Task StartTransactionAsync()
-        {
-            if (_currentTransaction is not null)
-                return;
-
-            _currentTransaction = await this.Database.BeginTransactionAsync();
-        }
-
-        public async Task CommitTransactionAsync()
-        {
-            if (_currentTransaction is null)
-                return;
-
-            await _currentTransaction.CommitAsync();
-        }
-
-        public async Task RollbackTransactionAsync()
-        {
-            if (_currentTransaction == null)
-                return;
-
-            await _currentTransaction.RollbackAsync();
-        }
-
-        public async Task<int> SaveAllAsync(CancellationToken cancellationToken = default!)
-        {
-            return await SaveChangesAsync(cancellationToken);
-        }
-
-
 
         #region Helpers
         private LambdaExpression BuildTenantAndNotDeletedFilter(Type entityType)
@@ -297,7 +269,10 @@ namespace GMAO.Infrastructure.Persistance
 
             var deletedFilter = Expression.Equal(isDeleted, Expression.Constant(false));
             var tenantFilter = Expression.Equal(tenantId, Expression.Constant(_authenticatedUser.TenantId));
-
+            if(_authenticatedUser.TenantId == Guid.Empty)
+            {
+                return Expression.Lambda(deletedFilter, parameter);
+            }
             var final = Expression.AndAlso(deletedFilter, tenantFilter);
             return Expression.Lambda(final, parameter);
         }

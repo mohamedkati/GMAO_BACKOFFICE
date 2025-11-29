@@ -1,12 +1,14 @@
 ﻿using FluentValidation;
 using GMAO.Application.Common.AppSettings;
 using GMAO.Application.Common.Behaviours;
+using GMAO.Application.Common.Mapping.Me;
 using GMAO.Application.Features.Auth.Queries.Login;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,6 +28,8 @@ namespace GMAO.Application.DIExtensions
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
+            services.AddAutoMapper(cnf => cnf.AddMaps(Assembly.GetExecutingAssembly()));
 
             return services;
         }

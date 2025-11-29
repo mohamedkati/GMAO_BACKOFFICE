@@ -5,6 +5,7 @@ using GMAO.Application.Features.Auth.Commands.ForgotPassword;
 using GMAO.Application.Features.Auth.Queries.EmailConfirmation;
 using GMAO.Application.Features.Auth.Queries.ForgotPassword;
 using GMAO.Application.Features.Auth.Queries.Login;
+using GMAO.Application.Features.me.Queries.MyInfo;
 using Microsoft.AspNetCore.Authorization;
 
 namespace GMAO.API.Controllers.v1
@@ -71,6 +72,17 @@ namespace GMAO.API.Controllers.v1
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordCommand command)
         {
             return Ok(await Mediator.Send(command));
+        }
+
+        [Authorize]
+        [HttpGet("verify-request")]
+        //[HttpGet("account/me")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> GetCurrentUser()
+        {
+            var query = new MeQuery();
+            return Ok(await Mediator.Send(query));
         }
     }
 }

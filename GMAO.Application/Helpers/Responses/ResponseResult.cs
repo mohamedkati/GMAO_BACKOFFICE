@@ -12,13 +12,14 @@ namespace GMAO.Application.Helpers.Responses
         public T Data { get; protected set; }
         public bool IsSucceeded { get; protected set; }
         public string ErrorMessage { get; protected set; }
+        public string Message { get; set; }
 
-
-        public static ResponseResult<T> OkResult(T data)
+        public static ResponseResult<T> OkResult(T data, string message = "")
         {
             var response = new ResponseResult<T>();
             response.Data = data;
             response.IsSucceeded = true;
+            response.Message = message;
             return response;
         }
 
