@@ -1,7 +1,5 @@
 ﻿using FluentValidation;
-using FluentValidation.Validators;
-using GMAO.Application.Features.property_group.Commands.Validators;
-using GMAO.Domain.ValueObjects;
+using GMAO.Application.SharedBusiness.Validators;
 
 namespace GMAO.Application.Features.property_group.Commands
 {

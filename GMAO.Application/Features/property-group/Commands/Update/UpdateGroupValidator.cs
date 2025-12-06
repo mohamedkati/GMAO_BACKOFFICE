@@ -1,10 +1,5 @@
 ﻿using FluentValidation;
-using GMAO.Application.Features.property_group.Commands.Validators;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using GMAO.Application.SharedBusiness.Validators;
 
 namespace GMAO.Application.Features.property_group.Commands.Update
 {

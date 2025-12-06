@@ -82,7 +82,7 @@ namespace GMAO.Infrastructure.Persistance.Configurations
             builder.Ignore(builder => builder.ManagedCustomerIds);
 
             builder.HasIndex(s => s.Email).IsUnique();
-            builder.HasIndex(s => s.RoleId);
+            //builder.HasIndex(s => s.RoleId);
             builder.HasIndex(x=> x.EmployeeNumber).IsUnique();
             builder.HasIndex(s => s.Status);
             builder.HasIndex(s => s.TenantId);

@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 using GMAO.Application.Common.Exceptions;
-using GMAO.Application.Common.Interfaces;
 using GMAO.Application.Common.Interfaces.Repositories;
 using GMAO.Application.Helpers.Responses;
 using GMAO.Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace GMAO.Application.Features.property_group.Commands
 {

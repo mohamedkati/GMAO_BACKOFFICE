@@ -18,7 +18,7 @@ namespace GMAO.Infrastructure.Persistance.Seed
     {
         public static async Task SeedAsync(IServiceProvider services)
         {
-            return; // Disable seeding for now
+            //return; // Disable seeding for now
             using var scope = services.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
@@ -122,13 +122,55 @@ namespace GMAO.Infrastructure.Persistance.Seed
             }
 
             // 6️ Créer un utilisateur Admin du tenant
-            var tenantAdminEmail = "mohammed.kati@axeciel.fr";
+            //var tenantAdminEmail = "mohammed.kati@axeciel.fr";
+            //var tenantAdmin = await userManager.FindByEmailAsync(tenantAdminEmail);
+            //if (tenantAdmin == null)
+            //{
+            //    tenantAdmin = new ApplicationUser
+            //    {
+            //        UserName = "admin",
+            //        Email = tenantAdminEmail,
+            //        EmailConfirmed = true,
+            //        IsActive = true
+            //    };
+
+            //    await userManager.CreateAsync(tenantAdmin, "Admin@123");
+            //}
+
+            //// 7️ Lier cet utilisateur au tenant avec le rôle Admin
+            //var adminRole = await context.DomainRoles.FirstAsync(r => r.Name == "Admin");
+            //var staffExist = await context.Staffs.AnyAsync(x => x.Email == tenantAdminEmail);
+            //if (!staffExist)
+            //{
+            //    // changed to Test@demo123
+            //    var staff = new Staff(tenantAdmin.Id, demoTenant.Id, "Mohammed", "KATI", tenantAdminEmail, "0641830560", "admin", adminRole.Id, "Admin@123");
+            //    await context.Staffs.AddAsync(staff);
+            //    await context.SaveChangesAsync();
+            //}
+            //if (!await context.TenantUsers.AnyAsync(tu =>
+            //    tu.UserId == tenantAdmin.Id && tu.TenantId == demoTenant.Id))
+            //{
+            //    var tu = new TenantUser(demoTenant.Id, tenantAdmin.Id, adminRole.Id, tenantAdmin.Id);
+            //    context.TenantUsers.Add(tu);
+            //    await context.SaveChangesAsync();
+            //}
+            //await CreateUserWithRole(userManager, context, demoTenant, "mohammed.kati@axeciel.fr", "Admin", "Mohammed", "Kati", "0641830560", "admin");
+            await CreateUserWithRole(userManager, context, demoTenant, "semo.katti.7@gmail.com", "Admin", "SEMO", "Kati", "0708105412", "Commercial");
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(" Seeding terminé avec succès !");
+            Console.ResetColor();
+        }
+
+        private static async Task CreateUserWithRole(UserManager<ApplicationUser> userManager, AppDbContext context, Tenant demoTenant, string userEmail, string userRole, string firstName, string lastName, string phoneNumber, string userName)
+        {
+            var tenantAdminEmail = userEmail;
             var tenantAdmin = await userManager.FindByEmailAsync(tenantAdminEmail);
             if (tenantAdmin == null)
             {
                 tenantAdmin = new ApplicationUser
                 {
-                    UserName = "admin",
+                    UserName = userName,
                     Email = tenantAdminEmail,
                     EmailConfirmed = true,
                     IsActive = true
@@ -138,12 +180,12 @@ namespace GMAO.Infrastructure.Persistance.Seed
             }
 
             // 7️ Lier cet utilisateur au tenant avec le rôle Admin
-            var adminRole = await context.DomainRoles.FirstAsync(r => r.Name == "Admin");
+            var adminRole = await context.DomainRoles.FirstAsync(r => r.Name == userRole);
             var staffExist = await context.Staffs.AnyAsync(x => x.Email == tenantAdminEmail);
             if (!staffExist)
             {
                 // changed to Test@demo123
-                var staff = new Staff(tenantAdmin.Id, demoTenant.Id, "Mohammed", "KATI", tenantAdminEmail, "0641830560", "admin", adminRole.Id, "Admin@123");
+                var staff = new Staff(tenantAdmin.Id, demoTenant.Id, firstName,  lastName, tenantAdminEmail,phoneNumber, userName, "Admin@123");
                 await context.Staffs.AddAsync(staff);
                 await context.SaveChangesAsync();
             }
@@ -154,13 +196,6 @@ namespace GMAO.Infrastructure.Persistance.Seed
                 context.TenantUsers.Add(tu);
                 await context.SaveChangesAsync();
             }
-
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(" Seeding terminé avec succès !");
-            Console.ResetColor();
         }
-
-
-
     }
 }

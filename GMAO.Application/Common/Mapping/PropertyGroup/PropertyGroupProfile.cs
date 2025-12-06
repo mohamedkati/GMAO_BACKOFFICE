@@ -3,12 +3,7 @@ using GMAO.Application.Features.property_group.Commands;
 using GMAO.Application.Features.property_group.Commands.Update;
 using GMAO.Application.Features.property_group.queries.DetailedPropertyGroup;
 using GMAO.Application.Features.property_group.queries.ListAllPropertyGroups;
-using GMAO.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using GMAO.Application.SharedBusiness.Dtos;
 using PropertyGroupEntity = GMAO.Domain.Entities.PropertyGroup;
 namespace GMAO.Application.Common.Mapping.PropertyGroup
 {
@@ -18,7 +13,7 @@ namespace GMAO.Application.Common.Mapping.PropertyGroup
         {
             this.CreateMap<PropertyGroupEntity, ListPropertyGroupDto>()
                 .ForMember(m => m.Clients, dest => dest.MapFrom(x => x.Customers.Count))
-                .ForMember(m => m.Sites, dest => dest.MapFrom(x => x.Customers.Sum(c=> c.Sites.Count)))
+                .ForMember(m => m.Sites, dest => dest.MapFrom(x => x.Customers.Sum(c => c.Sites.Count)))
                 .ForMember(m => m.TotalAnnualRevenue, dest => dest.Ignore());// TODO - Calculer le revenu annuel total réel
 
             //(src, dest) =>
@@ -32,6 +27,7 @@ namespace GMAO.Application.Common.Mapping.PropertyGroup
             this.CreateMap<PropertyGroupEntity, DetailedPropertyGroupDto>();
             this.CreateMap<CreatePropertyGroupCommand, PropertyGroupEntity>();
             this.CreateMap<UpdateGroupPropertyCommand, PropertyGroupEntity>();
+            this.CreateMap<PropertyGroupEntity, PropertyGroupAsKeyValue>();
 
         }
     }

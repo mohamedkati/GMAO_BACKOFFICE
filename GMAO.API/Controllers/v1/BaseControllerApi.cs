@@ -1,5 +1,4 @@
 ﻿global using Microsoft.AspNetCore.Mvc;
-using Asp.Versioning;
 using AutoMapper;
 using MediatR;
 

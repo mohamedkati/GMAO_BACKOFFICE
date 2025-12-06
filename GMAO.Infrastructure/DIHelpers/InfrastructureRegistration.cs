@@ -60,6 +60,8 @@ namespace GMAO.Infrastructure.DIHelpers
         {
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped(typeof(IPropertyGroupRepository), typeof(PropertyGroupRepository));
+            services.AddScoped(typeof(ICustomerRepository), typeof(CustomerRepository));
+            services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
 
         }
         public static void ConfigureAppAuthenticationServices(this IServiceCollection services)

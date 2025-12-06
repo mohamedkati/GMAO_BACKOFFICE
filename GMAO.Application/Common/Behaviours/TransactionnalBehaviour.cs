@@ -1,11 +1,6 @@
 ﻿using GMAO.Application.Common.Interfaces.Infrastructure;
 using GMAO.Application.Common.Interfaces.Services;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GMAO.Application.Common.Behaviours
 {

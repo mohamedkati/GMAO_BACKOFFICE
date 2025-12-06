@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using Azure.Core;
 using GMAO.Application.Common.Interfaces.Repositories;
+using GMAO.Application.SharedBusiness.Dtos;
 using GMAO.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -121,6 +122,23 @@ namespace GMAO.Infrastructure.Persistance.Repositories
                 .ProjectTo<TResult>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellation),
                 totalCount);
+        }
+
+        public async Task<IReadOnlyList<PropertyGroupAsKeyValue>> GetPropertyGroupsAsKeyValueAsync(string search, CancellationToken cancellation = default)
+        {
+            var query = _context.PropertyGroups.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                var searchLower = search.Trim().ToLower();
+                query = query.Where(x =>
+                    x.Reference.ToLower().Contains(searchLower) ||
+                    x.Name.ToLower().Contains(searchLower)
+                );
+            }
+            return await query
+                .AsNoTracking()
+                .ProjectTo<PropertyGroupAsKeyValue>(_mapper.ConfigurationProvider)
+                .ToListAsync(cancellation);
         }
     }
 }

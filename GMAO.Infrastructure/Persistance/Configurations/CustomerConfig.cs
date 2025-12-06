@@ -34,7 +34,7 @@ namespace GMAO.Infrastructure.Persistance.Configurations
             builder.OwnsOne(c => c.BillingSettings, b =>
             {
                 b.Property(x => x.Mode).HasConversion<int>().IsRequired();
-                b.Property(x => x.PaymentTermsDays).IsRequired();
+                //b.Property(x => x.PaymentTermsDays).IsRequired();
                 b.Property(x => x.AutoGenerateInvoices).IsRequired().HasDefaultValue(false);
                 b.Property(x => x.InvoiceFrequency).HasConversion<int>().IsRequired();
                 b.Property(x => x.SendEmailNotifications).IsRequired().HasDefaultValue(true);

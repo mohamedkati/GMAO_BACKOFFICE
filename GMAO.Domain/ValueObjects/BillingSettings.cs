@@ -10,7 +10,6 @@ namespace GMAO.Domain.ValueObjects
     public class BillingSettings : ValueObject
     {
         public BillingMode Mode { get; init; } = BillingMode.Centralized;
-        public int PaymentTermsDays { get; init; } = 30;
         public bool AutoGenerateInvoices { get; init; } = true;
         public InvoiceFrequency InvoiceFrequency { get; init; } = InvoiceFrequency.PerWorkOrder;
         public bool SendEmailNotifications { get; init; } = true;
@@ -22,7 +21,6 @@ namespace GMAO.Domain.ValueObjects
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return Mode;
-            yield return PaymentTermsDays;
             yield return AutoGenerateInvoices;
         }
     }

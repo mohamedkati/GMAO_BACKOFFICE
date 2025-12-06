@@ -1552,6 +1552,9 @@ namespace GMAO.Infrastructure.Migrations
                     b.Property<Guid?>("DeletedBy")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("DueDays")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -1564,21 +1567,22 @@ namespace GMAO.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
                         .HasDefaultValue("");
 
                     b.Property<Guid>("TenantId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Terms")
-                        .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
                         .HasDefaultValue("");
 
                     b.HasKey("Id");
 
-                    b.ToTable("PaymentMethod");
+                    b.ToTable("payment_methods", (string)null);
                 });
 
             modelBuilder.Entity("GMAO.Domain.Entities.PropertyGroup", b =>
@@ -3030,9 +3034,6 @@ namespace GMAO.Infrastructure.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasDefaultValue("");
 
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -3046,8 +3047,6 @@ namespace GMAO.Infrastructure.Migrations
 
                     b.HasIndex("EmployeeNumber")
                         .IsUnique();
-
-                    b.HasIndex("RoleId");
 
                     b.HasIndex("Status");
 
@@ -4579,7 +4578,8 @@ namespace GMAO.Infrastructure.Migrations
 
                     b.HasOne("GMAO.Domain.Entities.PaymentMethod", "PaymentMethod")
                         .WithMany("Clients")
-                        .HasForeignKey("PaymentMethodId");
+                        .HasForeignKey("PaymentMethodId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("GMAO.Domain.Entities.PropertyGroup", "PropertyGroup")
                         .WithMany("Customers")
@@ -4727,9 +4727,6 @@ namespace GMAO.Infrastructure.Migrations
                                 .HasColumnType("decimal(18,2)");
 
                             b1.Property<int>("Mode")
-                                .HasColumnType("int");
-
-                            b1.Property<int>("PaymentTermsDays")
                                 .HasColumnType("int");
 
                             b1.Property<bool>("SendEmailNotifications")
@@ -5485,12 +5482,6 @@ namespace GMAO.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("GMAO.Domain.Entities.Auth.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.OwnsOne("GMAO.Domain.ValueObjects.Address", "Address", b1 =>
                         {
                             b1.Property<Guid>("StaffId")
@@ -5552,8 +5543,6 @@ namespace GMAO.Infrastructure.Migrations
 
                     b.Navigation("Address")
                         .IsRequired();
-
-                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("GMAO.Domain.Entities.StockTransaction", b =>

@@ -20,7 +20,7 @@ namespace GMAO.Application.Features.property_group.queries.PropertyGroupContacts
             if (request.PropertyGroupId == Guid.Empty)
                 return ResponseResult<IReadOnlyList<PropertyGroupContactsDto>>.FailResult("Invalid Property Group Id.");
 
-            var contacts = await _groupRepository.GetPropertyGroupContactsByIdAsync<PropertyGroupContactsDto>(request.PropertyGroupId,cancellationToken);
+            var contacts = await _groupRepository.GetPropertyGroupContactsByIdAsync<PropertyGroupContactsDto>(request.PropertyGroupId, cancellationToken);
 
             return ResponseResult<IReadOnlyList<PropertyGroupContactsDto>>.OkResult(contacts);
         }

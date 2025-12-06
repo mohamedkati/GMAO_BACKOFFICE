@@ -4,6 +4,7 @@ using GMAO.Application.Features.property_group.Commands.DeleteContactGroup;
 using GMAO.Application.Features.property_group.Commands.Update;
 using GMAO.Application.Features.property_group.Commands.UpdateContactGroup;
 using GMAO.Application.Features.property_group.queries.DetailedPropertyGroup;
+using GMAO.Application.Features.property_group.queries.GetPropertyGroupsSelectAsKeyValue;
 using GMAO.Application.Features.property_group.queries.ListAllPropertyGroups;
 using GMAO.Application.Features.property_group.queries.PropertyGroupContacts;
 using GMAO.Application.Helpers.Responses;
@@ -36,7 +37,7 @@ namespace GMAO.API.Controllers.v1
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateGroup([FromBody] UpdateGroupPropertyCommand command,[FromRoute] Guid id)
+        public async Task<IActionResult> UpdateGroup([FromBody] UpdateGroupPropertyCommand command, [FromRoute] Guid id)
         {
             if (id != command.Id)
                 return BadRequest(ResponseResult<string>.FailResult("Id in the route is not the same Id in the body"));
@@ -73,5 +74,11 @@ namespace GMAO.API.Controllers.v1
         }
 
 
+        [HttpGet("select-as-key-value")]
+        public async Task<IActionResult> GetPropertyGroupsSelectAsKeyValue([FromQuery] GetPropertyGroupsSelectAsKeyValueQuery query)
+        {
+            var result = await Mediator.Send(query);
+            return Ok(result);
+        }
     }
 }

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace GMAO.Application.Helpers.Responses
+﻿namespace GMAO.Application.Helpers.Responses
 {
     public class ResponseResult<T>
     {
@@ -14,7 +7,7 @@ namespace GMAO.Application.Helpers.Responses
         public string ErrorMessage { get; protected set; }
         public string Message { get; set; }
 
-        public static ResponseResult<T> OkResult(T data, string message = "")
+        public  static ResponseResult<T> OkResult(T data, string message = "")
         {
             var response = new ResponseResult<T>();
             response.Data = data;

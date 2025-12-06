@@ -1,16 +1,9 @@
 ﻿using FluentValidation;
-using GMAO.Application.Common.AppSettings;
 using GMAO.Application.Common.Behaviours;
-using GMAO.Application.Common.Mapping.Me;
 using GMAO.Application.Features.Auth.Queries.Login;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GMAO.Application.DIExtensions
 {

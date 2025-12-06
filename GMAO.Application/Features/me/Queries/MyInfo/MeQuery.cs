@@ -2,11 +2,6 @@
 using GMAO.Application.Features.me.DTOs;
 using GMAO.Application.Helpers.Responses;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GMAO.Application.Features.me.Queries.MyInfo
 {
@@ -26,7 +21,7 @@ namespace GMAO.Application.Features.me.Queries.MyInfo
         }
         public async Task<ResponseResult<MeQueryDto>> Handle(MeQuery request, CancellationToken cancellationToken)
         {
-           var user = await _accountService.GetUserInfoAsync(_authenticatedUser.UserId, _authenticatedUser.TenantId);
+            var user = await _accountService.GetUserInfoAsync(_authenticatedUser.UserId, _authenticatedUser.TenantId);
             return ResponseResult<MeQueryDto>.OkResult(user);
         }
     }

@@ -1,14 +1,11 @@
-using GMAO.API.Extensions;
-using GMAO.Infrastructure.DIHelpers;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using GMAO.Application.DIExtensions;
-using GMAO.Application.Common.AppSettings;
-using GMAO.Infrastructure.Persistance.Seed;
-using GMAO.Application.Common.Behaviours;
 using GMAO.API.Configurations;
+using GMAO.API.Extensions;
+using GMAO.Application.Common.AppSettings;
+using GMAO.Application.Common.Behaviours;
+using GMAO.Application.DIExtensions;
+using GMAO.Infrastructure.DIHelpers;
+using GMAO.Infrastructure.Persistance.Seed;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
 var builder = WebApplication.CreateBuilder(args);

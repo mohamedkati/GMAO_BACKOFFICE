@@ -14,7 +14,7 @@ namespace GMAO.Application.Features.property_group.Commands.CreateContactGroup
                 .NotEmpty().WithMessage("Last name is required.")
                 .MaximumLength(100).WithMessage("Last name must not exceed 100 characters.");
 
-            this.RuleFor(x=> x.Role)
+            this.RuleFor(x => x.Role)
                 .IsInEnum().WithMessage("Contact role is invalid.");
 
             this.RuleFor(x => x.PersonType)
@@ -40,7 +40,7 @@ namespace GMAO.Application.Features.property_group.Commands.CreateContactGroup
             this.RuleFor(x => x.Mobile)
                 .MaximumLength(20).WithMessage("Mobile number must not exceed 20 characters.");
 
-            this.RuleFor(x=> x.PreferredContactMethod)
+            this.RuleFor(x => x.PreferredContactMethod)
                 .IsInEnum().WithMessage("Preferred contact method is invalid.");
 
         }

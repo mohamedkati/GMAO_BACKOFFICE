@@ -13,6 +13,7 @@
     <Folder Include="Features\Quotes\EventHandlers\" />
     <Folder Include="Features\Quotes\Services\" />
     <Folder Include="Features\Quotes\Queries\" />
+    <Folder Include="Features\Staffs\DTOs\" />
   </ItemGroup>
 
   <ItemGroup>

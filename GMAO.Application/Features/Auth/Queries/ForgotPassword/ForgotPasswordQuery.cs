@@ -1,11 +1,6 @@
 ﻿using GMAO.Application.Common.Interfaces.Authentication;
 using GMAO.Application.Helpers.Responses;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GMAO.Application.Features.Auth.Queries.ForgotPassword
 {

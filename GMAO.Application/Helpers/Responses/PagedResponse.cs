@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GMAO.Application.Helpers.Responses
+﻿namespace GMAO.Application.Helpers.Responses
 {
     public class PagedResponse<T> : ResponseResult<IReadOnlyList<T>>
     {
