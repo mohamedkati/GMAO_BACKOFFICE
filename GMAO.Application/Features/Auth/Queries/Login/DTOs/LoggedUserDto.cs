@@ -1,4 +1,6 @@
-﻿namespace GMAO.Application.Features.Auth.Queries.Login.DTOs
+﻿using GMAO.Application.Features.me.DTOs;
+
+namespace GMAO.Application.Features.Auth.Queries.Login.DTOs
 {
     public class LoggedUserDto
     {
@@ -8,5 +10,7 @@
         public string FullName { get; set; }
         public bool AccountConfirmed { get; set; }
         public string Token { get; set; }
+        public MyInfoDto User { get; set; }
+        public TenantDto Tenant { get; set; }
     }
 }

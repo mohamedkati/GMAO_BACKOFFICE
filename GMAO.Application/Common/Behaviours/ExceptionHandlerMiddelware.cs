@@ -46,7 +46,7 @@ namespace GMAO.Application.Common.Behaviours
                         break;
                     case UnAuthorizedException e:
                         // forbidden error
-                        response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        response.StatusCode = (int)HttpStatusCode.Forbidden;
                         break;
                     case NotFoundException:
                         response.StatusCode = (int)HttpStatusCode.NotFound;

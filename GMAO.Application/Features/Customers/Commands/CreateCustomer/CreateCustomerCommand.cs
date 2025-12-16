@@ -1,11 +1,13 @@
-﻿using GMAO.Application.Helpers.Responses;
+﻿using GMAO.Application.Common.Authorization;
+using GMAO.Application.Helpers.Responses;
+using GMAO.Domain.Authorization;
 using GMAO.Domain.Enums;
 using GMAO.Domain.ValueObjects;
 using MediatR;
 
 namespace GMAO.Application.Features.Customers.Commands.CreateCustomer
 {
-    public class CreateCustomerCommand : IRequest<ResponseResult<bool>>
+    public class CreateCustomerCommand : IRequest<ResponseResult<bool>>, IRequiredPermission
     {
         public string Reference { get; set; } = string.Empty;
         public string CompanyName { get; set; } = string.Empty;
@@ -20,5 +22,9 @@ namespace GMAO.Application.Features.Customers.Commands.CreateCustomer
         public Guid? PaymentMethodId { get; set; } // default payment term ( mode réglement )
         public Address InvoiceAddress { get; set; } = default!;
         public Address MailingAddress { get; set; } = default!;
+
+        public string[] RequiredPermissions => [PermissionConfig.CombineResourceAction(Resource.Customers, StandardAction.Create)];
+
+        public string[] RequiredRoles => [];
     }
 }

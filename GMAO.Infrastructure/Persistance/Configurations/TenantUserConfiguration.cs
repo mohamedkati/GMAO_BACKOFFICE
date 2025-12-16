@@ -21,6 +21,11 @@ namespace GMAO.Infrastructure.Persistance.Configurations
                    .WithMany()
                    .HasForeignKey(tu => tu.UserId)
                    .OnDelete(DeleteBehavior.Cascade);
+
+
+            builder.HasOne(builder => builder.Role)
+                   .WithMany(x => x.Users)
+                   .HasForeignKey(builder => builder.RoleId);
         }
     }
 }

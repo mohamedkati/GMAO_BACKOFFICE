@@ -68,6 +68,7 @@ namespace GMAO.Infrastructure.DIHelpers
         {
             //services.AddScoped<IAppDbContext>(scp => scp.GetRequiredService<AppDbContext>());
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IPermissionService, PermissionService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
     }

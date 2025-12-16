@@ -1,6 +1,8 @@
-﻿using GMAO.Application.Features.Customers.DTOs;
+﻿using GMAO.Application.Common.Authorization;
+using GMAO.Application.Features.Customers.DTOs;
 using GMAO.Application.Helpers.Request;
 using GMAO.Application.Helpers.Responses;
+using GMAO.Domain.Authorization;
 using GMAO.Domain.Enums;
 using MediatR;
 using System;
@@ -11,11 +13,13 @@ using System.Threading.Tasks;
 
 namespace GMAO.Application.Features.Customers.Queries.GetCustomers
 {
-    public class GetCustomersQuery : PagedRequest,IRequest<PagedResponse<CustomerDto>>
+    public class GetCustomersQuery : PagedRequest, IRequest<PagedResponse<CustomerDto>>, IRequiredPermission
     {
         public string? SearchString { get; set; }
         public Guid? PropertyGroupId { get; set; }
         public Guid? CommercialId { get; set; }
         public CustomerType? Type { get; set; }
+
+        public string[] RequiredPermissions => [PermissionConfig.CombineResourceAction(Resource.Customers, StandardAction.View)];
     }
 }

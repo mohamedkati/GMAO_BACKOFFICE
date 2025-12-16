@@ -29,10 +29,12 @@ namespace GMAO.Application.Common.Behaviours
             {
                 var emailConfirmedClaim = user.FindFirst("email_confirmed")?.Value;
                 var passwordChangedClaim = user.FindFirst("default_password_changed")?.Value;
-                if (emailConfirmedClaim?.ToLower() != "true")
-                    throw new UnAuthorizedException("User email is not confirmed.");
-                if (passwordChangedClaim?.ToLower() != "true")
-                    throw new UnAuthorizedException("User must change password.");
+
+                // TODO Look AFTER
+                //if (emailConfirmedClaim?.ToLower() != "true")
+                //    throw new UnAuthorizedException("User email is not confirmed.");
+                //if (passwordChangedClaim?.ToLower() != "true")
+                //    throw new UnAuthorizedException("User must change password.");
             }
 
             if (authorization.RequiredRoles.Any())
@@ -43,7 +45,7 @@ namespace GMAO.Application.Common.Behaviours
                     .ToList();
 
                 if (!authorization.RequiredRoles.Any(x => userRoles.Contains(x)))
-                    throw new UnAuthorizedException("User does not have the required role.");
+                    throw new UnAuthorizedException("Vous n'avez pas la permission pour cette action");
             }
 
             if (authorization.RequiredPermissions.Any())
@@ -54,16 +56,16 @@ namespace GMAO.Application.Common.Behaviours
                     .ToList();
 
                 if (!authorization.RequiredPermissions.Any(x => permissions.Contains(x)))
-                    throw new UnAuthorizedException("User does not have the required permissions.");
+                    throw new UnAuthorizedException("Vous n'avez pas la permission pour cette action");
             }
 
             if (authorization.MustMatchTenant)
             {
                 var userTenantId = user.FindFirst("tenant_id")?.Value;
                 var tenantIdFromHeader = _contextAccessor.HttpContext?.Request.Headers["X-Tenant-Id"].FirstOrDefault();
-
-                if (tenantIdFromHeader != null && userTenantId != tenantIdFromHeader)
-                    throw new UnAuthorizedException("Forbidden: Tenant mismatch.");
+                 //TODO LOOK AFTER
+                //if (tenantIdFromHeader != null && userTenantId != tenantIdFromHeader)
+                //    throw new UnAuthorizedException("Forbidden: Tenant mismatch.");
             }
 
             return await next(cancellationToken);

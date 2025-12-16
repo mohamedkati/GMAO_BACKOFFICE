@@ -1,5 +1,7 @@
-﻿using GMAO.Application.Features.Customers.DTOs;
+﻿using GMAO.Application.Common.Authorization;
+using GMAO.Application.Features.Customers.DTOs;
 using GMAO.Application.Helpers.Responses;
+using GMAO.Domain.Authorization;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -9,9 +11,10 @@ using System.Threading.Tasks;
 
 namespace GMAO.Application.Features.Customers.Queries.GetCustomerContactById
 {
-    public class GetCustomerContactByIdQuery : IRequest<ResponseResult<CustomerContactDto>>
+    public class GetCustomerContactByIdQuery : IRequest<ResponseResult<CustomerContactDto>>, IRequiredPermission
     {
         public Guid CustomerId { get; set; }
         public Guid ContactId { get; set; }
+        public string[] RequiredPermissions => [PermissionConfig.CombineResourceAction(Resource.CustomerContacts, StandardAction.View)];
     }
 }

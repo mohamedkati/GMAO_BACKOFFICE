@@ -66,5 +66,6 @@ namespace GMAO.Domain.Entities
         public ICollection<Site> Technician1ForSites { get; set; }
         public ICollection<Site> Technician2ForSites { get; set; }
         public ICollection<TenantUser> Tenants { get; set; }
+        public ICollection<UserPermission> UserPermissions { get; set; } = new List<UserPermission>();
     }
 }

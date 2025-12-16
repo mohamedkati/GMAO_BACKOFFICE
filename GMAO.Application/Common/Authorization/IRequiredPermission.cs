@@ -3,9 +3,9 @@
     public interface IRequiredPermission
     {
         string[] RequiredPermissions { get; }
-        string[] RequiredRoles { get; }
-        bool MustMatchTenant { get; }
-        bool RequireAuthentication { get; }
+        string[] RequiredRoles => [];
+        bool MustMatchTenant  => true;
+        bool RequireAuthentication => true;
         bool CheckEmailConfirmedAndPasswordChanged => true;
     }
 }

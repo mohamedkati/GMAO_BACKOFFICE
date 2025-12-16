@@ -118,6 +118,9 @@ namespace GMAO.Infrastructure.Persistance
         // Auth métier
         public DbSet<Role> DomainRoles => Set<Role>();
         public DbSet<Permission> Permissions => Set<Permission>();
+        public DbSet<UserPermission> UserPermissions => Set<UserPermission>();
+        public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
+        public DbSet<PermissionAudit> PermissionAudits => Set<PermissionAudit>();
         public DbSet<TenantUser> TenantUsers => Set<TenantUser>();
         public DbSet<Staff> Staffs => Set<Staff>();
 

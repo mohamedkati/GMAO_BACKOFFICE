@@ -31,10 +31,11 @@ namespace GMAO.Infrastructure.Services.Authentication
         private readonly ITokenService tokenService;
         private readonly IEmailService _emailService;
         private readonly IMapper _mapper;
+        private readonly IPermissionService permissionService;
         public AppDbContext _context;
         private readonly AppSetting _appSetting;
 
-        public AccountService(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, ITokenService tokenService, AppDbContext context, IOptions<AppSetting> appSetting, IEmailService emailService, IMapper mapper)
+        public AccountService(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, ITokenService tokenService, AppDbContext context, IOptions<AppSetting> appSetting, IEmailService emailService, IMapper mapper, IPermissionService permissionService)
         {
             this._userManager = userManager;
             this._roleManager = roleManager;
@@ -42,6 +43,7 @@ namespace GMAO.Infrastructure.Services.Authentication
             this._context = context;
             this._emailService = emailService;
             this._mapper = mapper;
+            this.permissionService = permissionService;
             this._appSetting = appSetting.Value;
         }
         public Task<bool> ConfirmPhoneNumberAsync(string userId, string token, string checkNumber)
@@ -64,23 +66,19 @@ namespace GMAO.Infrastructure.Services.Authentication
             {
                 throw new AppValidationException(new Dictionary<string, string[]>() { { "credentials", new[] { "Invalid credentials !" } } });
             }
-            var tenant = await _context.TenantUsers.FirstOrDefaultAsync(tu => tu.UserId == user.Id);
-            if (tenant is null)
+            var tenantUser = await _context.TenantUsers.FirstOrDefaultAsync(tu => tu.UserId == user.Id);
+            if (tenantUser is null)
             {
                 throw new AppValidationException(new Dictionary<string, string[]>() { { "tenant", new[] { "No tenant assigned to this user !" } } });
             }
 
             var roles = await _userManager.GetRolesAsync(user);
-            var domainPermissions = await _context.TenantUsers
-                .Include(x => x.Role)
-                .ThenInclude(x => x.Permissions)
-                .Where(t => t.Id == tenant.Id)
-                .SelectMany(x => x.Role.Permissions)
-                .Select(x => x.Code)
-                .ToListAsync();
+            var domainPermissions = await permissionService.GetEffectiveUserPermissionsAsync(user.Id);
+            var tenant = await _context.Tenants.FirstAsync(t => t.Id == tenantUser.TenantId);
+            var userInfo = await _context.Staffs.FirstAsync(t => t.Id == user.Id);
 
             var domainRoles = await _context.TenantUsers.Include(x => x.Role)
-                .Where(t => t.Id == tenant.Id)
+                .Where(t => t.Id == tenantUser.Id)
                 .Select(x => x.Role.Name)
                 .ToListAsync();
 
@@ -89,7 +87,7 @@ namespace GMAO.Infrastructure.Services.Authentication
                 Id = user.Id,
                 UserName = user.UserName,
                 Email = user.Email,
-                TenantId = tenant.TenantId,
+                TenantId = tenantUser.TenantId,
                 EmailConfirmed = user.EmailConfirmed,
                 PhoneNumberConfirmed = user.PhoneNumberConfirmed,
                 DefaultPasswordChanged = user.DefaultPasswordChanged,
@@ -99,17 +97,38 @@ namespace GMAO.Infrastructure.Services.Authentication
             };
 
             var token = await tokenService.GenerateTokenAsync(loggedUser);
+            var tenantMapped = _mapper.Map<TenantDto>(tenant);
+            var myInfo = MapToMyInfoDto(userInfo, domainPermissions.ToList(), tenant.Id);
+
             return new LoggedUserDto()
             {
                 Id = user.Id,
                 AccountConfirmed = user.EmailConfirmed,
-                TenantId = tenant.Id,
+                TenantId = tenantUser.Id,
                 FullName = user.UserName,
                 Token = token,
-                UserName = user.UserName
+                UserName = user.UserName,
+                User = myInfo,
+                Tenant = tenantMapped
             };
         }
-
+        private MyInfoDto MapToMyInfoDto(Staff user, List<string> permissions, Guid tenantId)
+        {
+            return new MyInfoDto()
+            {
+                Phone = user.CellPhone,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                UserId = user.Id,
+                Permissions = permissions,
+                TenantId = tenantId,
+                EmailVerified = true,
+                CreatedAt = user.CreatedAt,
+                UpdatedAt = user.LastModifiedAt,
+                Status = 0,
+            };
+        }
         /// <summary>
         /// Register a new user with username, phone number, email and password, validate if the username and email are unique, otherwise throw ValidationException, create the user and assign default role, return the userId
         /// </summary>
@@ -360,6 +379,7 @@ namespace GMAO.Infrastructure.Services.Authentication
                 .ThenInclude(x => x.Permissions)
                 .Where(t => t.UserId == userId && t.TenantId == tenantId)
                 .SelectMany(x => x.Role.Permissions)
+                .Select(x => x.Permission)
                 .Select(x => x.Code)
                 .ToListAsync();
 

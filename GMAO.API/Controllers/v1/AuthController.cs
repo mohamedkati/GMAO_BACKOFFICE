@@ -76,7 +76,7 @@ namespace GMAO.API.Controllers.v1
 
         [Authorize]
         [HttpGet("verify-request")]
-        //[HttpGet("account/me")]
+        [HttpGet("me")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetCurrentUser()

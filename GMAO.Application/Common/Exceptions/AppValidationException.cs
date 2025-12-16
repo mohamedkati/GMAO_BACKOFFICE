@@ -4,7 +4,7 @@ namespace GMAO.Application.Common.Exceptions
 {
     public class AppValidationException : Exception
     {
-        public IDictionary<string, string[]> Errors { get; }
+        public IDictionary<string, string[]> Errors { get; } = new Dictionary<string, string[]>();
 
         public AppValidationException()
             : base("Une ou plusieurs erreurs de validation se sont produites.")
@@ -26,6 +26,12 @@ namespace GMAO.Application.Common.Exceptions
            : this()
         {
             Errors = errors;
+        }
+
+        public AppValidationException(string propertyName, string errorMessage)
+            : this()
+        {
+            Errors.Add(propertyName, new string[] { errorMessage });
         }
     }
 }

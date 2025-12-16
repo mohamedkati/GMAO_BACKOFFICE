@@ -1,4 +1,6 @@
-﻿using GMAO.Application.Helpers.Responses;
+﻿using GMAO.Application.Common.Authorization;
+using GMAO.Application.Helpers.Responses;
+using GMAO.Domain.Authorization;
 using GMAO.Domain.Enums;
 using GMAO.Domain.ValueObjects;
 using MediatR;
@@ -10,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace GMAO.Application.Features.Customers.Commands.UpdateCustomer
 {
-    public class UpdateCustomerCommand : IRequest<ResponseResult<bool>>
+    public class UpdateCustomerCommand : IRequest<ResponseResult<bool>>, IRequiredPermission
     {
         public Guid Id { get; set; }
         public string Reference { get; set; } = string.Empty;
@@ -26,5 +28,8 @@ namespace GMAO.Application.Features.Customers.Commands.UpdateCustomer
         public Guid? PaymentMethodId { get; set; } // default payment term ( mode réglement )
         public Address InvoiceAddress { get; set; } = default!;
         public Address MailingAddress { get; set; } = default!;
+
+        public string[] RequiredPermissions => [PermissionConfig.CombineResourceAction(Resource.Customers, StandardAction.Edit),
+            PermissionConfig.CombineResourceAction(Resource.Customers, ResourceSpecificActions.Customers.ChangeCommercial)];
     }
 }

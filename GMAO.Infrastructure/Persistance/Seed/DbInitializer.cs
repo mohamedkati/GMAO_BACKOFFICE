@@ -23,57 +23,85 @@ namespace GMAO.Infrastructure.Persistance.Seed
             var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
+            var permissionService = scope.ServiceProvider.GetRequiredService<IPermissionService>();
 
             //await context.Database.MigrateAsync();
 
             // 1️ Permissions de base
             if (!await context.Permissions.AnyAsync())
             {
-                var permissions = new[]
-                {
-                new Permission("WorkOrder.View", "Consulter les interventions"),
-                new Permission("WorkOrder.Create", "Créer une intervention"),
-                new Permission("WorkOrder.Update", "Mettre à jour une intervention"),
-                new Permission("WorkOrder.Close", "Clôturer une intervention"),
+                //    var permissions = new Permission[]
+                //    {
+                //     new() { Id = Guid.NewGuid(), Resource = "customers", Action = "view", Code = "customers:view", DisplayName = "Voir les clients", Category = "standard" },
+                //    new() { Id = Guid.NewGuid(), Resource = "customers", Action = "create", Code = "customers:create", DisplayName = "Créer des clients", Category = "standard" },
+                //    new() { Id = Guid.NewGuid(), Resource = "customers", Action = "edit", Code = "customers:edit", DisplayName = "Modifier les clients", Category = "standard" },
+                //    new() { Id = Guid.NewGuid(), Resource = "customers", Action = "delete", Code = "customers:delete", DisplayName = "Supprimer les clients", Category = "standard", IsDangerous = true,},
 
-                new Permission("Quote.View", "Voir les devis"),
-                new Permission("Quote.Create", "Créer un devis"),
-                new Permission("Quote.Approve", "Approuver un devis"),
+                //    // Work Orders
+                //    new() { Id = Guid.NewGuid(), Resource = "workorders", Action = "view", Code = "workorders:view", DisplayName = "Voir les bons de travail", Category = "standard" },
+                //    new() { Id = Guid.NewGuid(), Resource = "workorders", Action = "create", Code = "workorders:create", DisplayName = "Créer des bons de travail", Category = "standard" },
+                //    new() { Id = Guid.NewGuid(), Resource = "workorders", Action = "cancel", Code = "workorders:cancel", DisplayName = "Annuler des bons de travail", Category = "specific", IsDangerous = true },
+                //    new() { Id = Guid.NewGuid(), Resource = "workorders", Action = "assign", Code = "workorders:assign", DisplayName = "Assigner des bons de travail", Category = "specific" },
 
-                new Permission("PurchaseOrder.Create", "Créer un bon de commande"),
-                new Permission("Part.View", "Voir les pièces"),
-                new Permission("Part.Edit", "Modifier les pièces"),
+                //};
 
-                new Permission("User.Manage", "Gérer les utilisateurs du tenant"),
-                new Permission("Role.Manage", "Gérer les rôles du tenant"),
-            };
+                //await context.Permissions.AddRangeAsync(permissions);
+                //await context.SaveChangesAsync();
 
-                await context.Permissions.AddRangeAsync(permissions);
-                await context.SaveChangesAsync();
+                await permissionService.SyncPermissionsFromConfigAsync();
             }
 
             // 2️ Créer les rôles de base dans le domaine (Tenant)
             if (!await context.DomainRoles.AnyAsync())
             {
-                var allPermissions = await context.Permissions.ToListAsync();
+                var superAdminRole = new Role
+                {
+                    Id = Guid.Parse("11111111-1111-1111-1111-111111111111"),
+                    Name = "SuperAdmin",
+                    DisplayName = "Super Administrateur",
+                    Description = "Accès complet au système",
+                    IsSystem = true,
+                    Priority = 100,
+                };
 
-                var admin = new Role("Admin", "Accès complet au tenant");
-                foreach (var p in allPermissions) admin.GrantPermission(p);
+                var adminRole = new Role
+                {
+                    Id = Guid.Parse("22222222-2222-2222-2222-222222222222"),
+                    Name = "Admin",
+                    DisplayName = "Administrateur",
+                    Description = "Gestion complète sauf paramètres système",
+                    IsSystem = true,
+                    Priority = 90,
+                };
 
-                var manager = new Role("Manager", "Gère les interventions et devis");
-                foreach (var p in allPermissions.Where(x =>
-                    x.Code.StartsWith("WorkOrder") ||
-                    x.Code.StartsWith("Quote"))) manager.GrantPermission(p);
+                var managerRole = new Role
+                {
+                    Id = Guid.Parse("33333333-3333-3333-3333-333333333333"),
+                    Name = "Manager",
+                    DisplayName = "Manager",
+                    Description = "Gestion opérationnelle et validation",
+                    IsSystem = true,
+                    Priority = 70,
+                };
 
-                var technician = new Role("Technician", "Exécute les interventions");
-                foreach (var p in allPermissions.Where(x =>
-                    x.Code.StartsWith("WorkOrder"))) technician.GrantPermission(p);
-
-                var client = new Role("Client", "Accède à ses demandes et devis");
-                foreach (var p in allPermissions.Where(x => x.Code.Contains("View"))) client.GrantPermission(p);
-
-                await context.DomainRoles.AddRangeAsync(admin, manager, technician, client);
+                await context.DomainRoles.AddRangeAsync(adminRole, managerRole, superAdminRole);
                 await context.SaveChangesAsync();
+
+                if (!await context.RolePermissions.AnyAsync(rp => rp.RoleId == adminRole.Id))
+                {
+                    Permission[] allPermissions = await context.Permissions.ToArrayAsync();
+                    foreach (var perm in allPermissions)
+                    {
+                        if (perm.Resource == "customers") continue;
+                        var rp = new RolePermission
+                        {
+                            RoleId = adminRole.Id,
+                            PermissionId = perm.Id
+                        };
+                        context.RolePermissions.Add(rp);
+                    }
+                    await context.SaveChangesAsync();
+                }
             }
 
             // 3️ Créer le tenant principal
@@ -121,6 +149,8 @@ namespace GMAO.Infrastructure.Persistance.Seed
                 await userManager.AddToRoleAsync(superAdmin, "SuperAdmin");
             }
 
+
+
             // 6️ Créer un utilisateur Admin du tenant
             //var tenantAdminEmail = "mohammed.kati@axeciel.fr";
             //var tenantAdmin = await userManager.FindByEmailAsync(tenantAdminEmail);
@@ -154,7 +184,7 @@ namespace GMAO.Infrastructure.Persistance.Seed
             //    context.TenantUsers.Add(tu);
             //    await context.SaveChangesAsync();
             //}
-            //await CreateUserWithRole(userManager, context, demoTenant, "mohammed.kati@axeciel.fr", "Admin", "Mohammed", "Kati", "0641830560", "admin");
+            await CreateUserWithRole(userManager, context, demoTenant, "mohammed.kati@axeciel.fr", "Admin", "Mohammed", "Kati", "0641830560", "admin");
             await CreateUserWithRole(userManager, context, demoTenant, "semo.katti.7@gmail.com", "Admin", "SEMO", "Kati", "0708105412", "Commercial");
 
             Console.ForegroundColor = ConsoleColor.Green;
@@ -185,7 +215,7 @@ namespace GMAO.Infrastructure.Persistance.Seed
             if (!staffExist)
             {
                 // changed to Test@demo123
-                var staff = new Staff(tenantAdmin.Id, demoTenant.Id, firstName,  lastName, tenantAdminEmail,phoneNumber, userName, "Admin@123");
+                var staff = new Staff(tenantAdmin.Id, demoTenant.Id, firstName, lastName, tenantAdminEmail, phoneNumber, userName, "Admin@123");
                 await context.Staffs.AddAsync(staff);
                 await context.SaveChangesAsync();
             }

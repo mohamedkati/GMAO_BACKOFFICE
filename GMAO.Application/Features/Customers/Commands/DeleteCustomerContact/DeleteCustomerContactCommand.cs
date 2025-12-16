@@ -1,4 +1,6 @@
-﻿using GMAO.Application.Helpers.Responses;
+﻿using GMAO.Application.Common.Authorization;
+using GMAO.Application.Helpers.Responses;
+using GMAO.Domain.Authorization;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,9 +10,11 @@ using System.Threading.Tasks;
 
 namespace GMAO.Application.Features.Customers.Commands.DeleteCustomerContact
 {
-    public class DeleteCustomerContactCommand : IRequest<ResponseResult<bool>>
+    public class DeleteCustomerContactCommand : IRequest<ResponseResult<bool>>, IRequiredPermission
     {
         public Guid Id { get; set; }
         public Guid CustomerId { get; set; }
+
+        public string[] RequiredPermissions => [PermissionConfig.CombineResourceAction(Resource.Customers,StandardAction.Delete)];
     }
 }
