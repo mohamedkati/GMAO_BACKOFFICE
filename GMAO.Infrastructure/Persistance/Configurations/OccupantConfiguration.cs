@@ -1,4 +1,4 @@
-﻿using GMAO.Domain.Entities;
+﻿using GMAO.Domain.Entities.siteAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

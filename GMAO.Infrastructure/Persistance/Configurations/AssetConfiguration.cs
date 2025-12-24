@@ -1,4 +1,4 @@
-﻿using GMAO.Domain.Entities;
+﻿using GMAO.Domain.Entities.siteAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -47,6 +47,17 @@ namespace GMAO.Infrastructure.Persistance.Configurations
                 .HasForeignKey(mp => mp.AssetId).OnDelete(DeleteBehavior.Cascade);
             builder.HasMany(a => a.Warranties).WithOne(w => w.Asset)
                 .HasForeignKey(w => w.AssetId).OnDelete(DeleteBehavior.Cascade);
+            builder.OwnsOne(a => a.Location, l =>
+            {
+                l.Property(x => x.PlanDocumentId).IsRequired(false);
+                l.HasOne(x => x.PlanDocument).WithOne().IsRequired();
+                l.Property(x => x.XPosition).IsRequired(false);
+                l.Property(x => x.YPosition).IsRequired(false);
+                l.Property(x => x.LocationDescription).IsRequired(false).HasMaxLength(255);
+            });
+
+
+
 
             builder.HasIndex(a => a.Reference).IsUnique();
             builder.HasIndex(a => a.SiteId);

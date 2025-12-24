@@ -1,4 +1,5 @@
 ﻿using GMAO.Domain.Common;
+using GMAO.Domain.Entities.siteAggregate;
 
 namespace GMAO.Domain.Entities
 {

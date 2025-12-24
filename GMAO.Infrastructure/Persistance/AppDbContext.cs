@@ -5,6 +5,7 @@ using GMAO.Application.Common.Interfaces.Services;
 using GMAO.Domain.Common;
 using GMAO.Domain.Entities;
 using GMAO.Domain.Entities.Auth;
+using GMAO.Domain.Entities.siteAggregate;
 using GMAO.Domain.Interfaces;
 using GMAO.Infrastructure.Persistance.Identity;
 using GMAO.Shared.Strings;
@@ -20,7 +21,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Unit = GMAO.Domain.Entities.Unit;
+using Unit = GMAO.Domain.Entities.siteAggregate.Unit;
 namespace GMAO.Infrastructure.Persistance
 {
     public class AppDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>

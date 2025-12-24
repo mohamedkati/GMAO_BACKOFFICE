@@ -18,7 +18,11 @@ namespace GMAO.Application.Features.Customers.Queries.GetCustomers
         public string? SearchString { get; set; }
         public Guid? PropertyGroupId { get; set; }
         public Guid? CommercialId { get; set; }
-        public CustomerType? Type { get; set; }
+        public List<CustomerType>? Types { get; set; }
+        public string? City { get; set; }
+        // Tri
+        public string? SortBy { get; set; } = "companyName";
+        public string? SortOrder { get; set; } = "asc";
 
         public string[] RequiredPermissions => [PermissionConfig.CombineResourceAction(Resource.Customers, StandardAction.View)];
     }

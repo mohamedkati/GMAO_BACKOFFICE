@@ -1,7 +1,6 @@
-﻿using GMAO.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Unit = GMAO.Domain.Entities.Unit;
+using Unit = GMAO.Domain.Entities.siteAggregate.Unit;
 
 namespace GMAO.Infrastructure.Persistance.Configurations
 {

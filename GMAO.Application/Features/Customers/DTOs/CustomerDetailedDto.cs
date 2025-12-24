@@ -1,4 +1,5 @@
-﻿using GMAO.Domain.Enums;
+﻿using GMAO.Application.SharedBusiness.Dtos.payment_method;
+using GMAO.Domain.Enums;
 using GMAO.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -25,5 +26,8 @@ namespace GMAO.Application.Features.Customers.DTOs
         public Guid? PaymentMethodId { get; set; }
         public IReadOnlyList<CustomerContactDto> Contacts { get; set; } = new List<CustomerContactDto>();
         public IReadOnlyList<CustomerBudgetDto> MaintenanceBudgets { get; set; } = new List<CustomerBudgetDto>();
+        public DateTime CreatedAt { get; set; }
+        public DateTime LastModifiedAt { get; set; }
+        public PaymentMethodAsKeyValueDto PaymentMethod { get; set; }
     }
 }

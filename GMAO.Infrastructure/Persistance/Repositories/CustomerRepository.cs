@@ -52,6 +52,7 @@ namespace GMAO.Infrastructure.Persistance.Repositories
         {
             var query = _context.Customers.Include(c => c.Contacts)
                                           .Include(c => c.MaintenanceBudgets)
+                                          .Include(c=> c.PaymentMethod)
                                           .Where(c => c.Id == id)
                                           .ProjectTo<CustomerDetailedDto>(_mapper.ConfigurationProvider)
                                           .AsNoTracking();
@@ -64,6 +65,8 @@ namespace GMAO.Infrastructure.Persistance.Repositories
                .Include(x => x.PropertyGroup)
                .Include(x => x.Sites)
                .Include(x => x.Contacts)
+               .Include(x => x.MaintenanceBudgets)
+               .AsNoTracking()
                .AsQueryable();
 
             if (!string.IsNullOrEmpty(filter.SearchString))
@@ -75,12 +78,32 @@ namespace GMAO.Infrastructure.Persistance.Repositories
             if (filter.CommercialId.HasValue)
                 query = query.Where(c => c.CommercialId == filter.CommercialId.Value);
 
-            if (filter.Type.HasValue)
-                query = query.Where(c => c.Type == filter.Type.Value);
+            if (filter.Types != null && filter.Types.Count > 0)
+                query = query.Where(c => filter.Types.Contains(c.Type));
+
+            if (!string.IsNullOrEmpty(filter.City))
+                query = query.Where(c => c.InvoiceAddress.City.ToLower() == filter.City.ToLower());
+
+            query = filter.SortBy?.ToLower() switch
+            {
+                "companyname" => filter.SortOrder == "desc"
+                    ? query.OrderByDescending(c => c.CompanyName)
+                    : query.OrderBy(c => c.CompanyName),
+                "reference" => filter.SortOrder == "desc"
+                    ? query.OrderByDescending(c => c.Reference)
+                    : query.OrderBy(c => c.Reference),
+                "type" => filter.SortOrder == "desc"
+                    ? query.OrderByDescending(c => c.Type)
+                    : query.OrderBy(c => c.Type),
+                "city" => filter.SortOrder == "desc"
+                    ? query.OrderByDescending(c => c.InvoiceAddress.City)
+                    : query.OrderBy(c => c.InvoiceAddress.City),
+                _ => query.OrderBy(c => c.CompanyName)
+            };
 
             var count = await query.CountAsync();
             var customers = await query
-                .Skip((filter.PageNumber - 1) * filter.PageSize)
+                .Skip((filter.Page - 1) * filter.PageSize)
                 .Take(filter.PageSize)
                 .Select(c => new CustomerDto()
                 {
@@ -92,7 +115,27 @@ namespace GMAO.Infrastructure.Persistance.Repositories
                     CommercialName = c.Commercial != null ? $"{c.Commercial.FirstName} {c.Commercial.LastName}" : string.Empty,
                     ContactsCount = c.Contacts.Count,
                     SitesCount = c.Sites.Count,
-                    lastModified = c.LastModifiedAt
+                    LastModified = c.LastModifiedAt,
+                    CreatedAt = c.CreatedAt,
+                    InvoiceCity = c.InvoiceAddress != null ? c.InvoiceAddress.City : string.Empty,
+                    // Contact principal (SubQuery optimisée)
+                    PrimaryContactEmail = c.Contacts.FirstOrDefault(ct => ct.IsPrimary) != null
+                    ? c.Contacts.FirstOrDefault(ct => ct.IsPrimary).Email
+                    : c.Contacts.FirstOrDefault() != null
+                        ? c.Contacts.FirstOrDefault().Email
+                        : null,
+                    PrimaryContactPhone = c.Contacts.FirstOrDefault(ct => ct.IsPrimary) != null
+                    ? c.Contacts.FirstOrDefault(ct => ct.IsPrimary).Phone
+                    : c.Contacts.FirstOrDefault() != null
+                        ? c.Contacts.FirstOrDefault().Phone
+                        : null,
+                    PrimaryContactName = c.Contacts.FirstOrDefault(ct => ct.IsPrimary) != null
+                    ? c.Contacts.FirstOrDefault(ct => ct.IsPrimary).FirstName + " " + c.Contacts.FirstOrDefault(ct => ct.IsPrimary).LastName
+                    : c.Contacts.FirstOrDefault() != null
+                        ? c.Contacts.FirstOrDefault().FirstName + " " + c.Contacts.FirstOrDefault().LastName
+                        : null,
+                    // Budget total (Sum)
+                    TotalBudget = c.MaintenanceBudgets.Sum(b => b.BudgetedAmount),
                 })
                 .ToListAsync();
 

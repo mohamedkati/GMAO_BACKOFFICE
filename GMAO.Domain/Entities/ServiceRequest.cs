@@ -1,4 +1,5 @@
 ﻿using GMAO.Domain.Common;
+using GMAO.Domain.Entities.siteAggregate;
 using GMAO.Domain.Enums;
 
 namespace GMAO.Domain.Entities

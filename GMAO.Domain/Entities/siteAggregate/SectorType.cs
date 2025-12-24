@@ -1,8 +1,8 @@
 ﻿using GMAO.Domain.Common;
 
-namespace GMAO.Domain.Entities
+namespace GMAO.Domain.Entities.siteAggregate
 {
-    public class MarketType : BaseAuditableEntity
+    public class SectorType : BaseAuditableEntity
     {
         public string Code { get; set; }
         public string Description { get; set; }

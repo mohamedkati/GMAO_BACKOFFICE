@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GMAO.Domain.Entities
+namespace GMAO.Domain.Entities.siteAggregate
 {
     public class Asset : BaseAuditableEntity
     {
@@ -22,6 +22,7 @@ namespace GMAO.Domain.Entities
         public string? Manufacturer { get; set; }
         public string? Model { get; set; }
         public string? SerialNumber { get; set; }
+        public AssetLocation? Location { get; set; }
         public DateTime InstallationDate { get; set; }
         public AssetStatus Status { get; set; }
         public CriticalityLevel CriticalityLevel { get; set; }
@@ -33,5 +34,6 @@ namespace GMAO.Domain.Entities
         public Asset? ParentAsset { get; set; }
         public ICollection<Customer> ClientsCommercial { get; set; } = new List<Customer>();
         public ICollection<ServiceRequest> ServiceRequests { get; set; } = new List<ServiceRequest>();
+
     }
 }

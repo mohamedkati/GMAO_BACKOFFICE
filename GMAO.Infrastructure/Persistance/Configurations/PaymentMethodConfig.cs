@@ -18,7 +18,9 @@ namespace GMAO.Infrastructure.Persistance.Configurations
             builder.Property(pm => pm.Name).IsRequired().HasMaxLength(100);
             builder.Property(pm => pm.Terms).IsRequired(false).HasMaxLength(500);
             builder.Property(pm => pm.DueDays).IsRequired();
-
+            builder.Property(pm => pm.Days).IsRequired();
+            builder.Property(pm => pm.TypeDueDate).IsRequired();
+            builder.Ignore(mp => mp.DomainEvents);
         }
     }
 }

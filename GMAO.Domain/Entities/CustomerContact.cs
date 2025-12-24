@@ -1,4 +1,5 @@
 ﻿using GMAO.Domain.Common;
+using GMAO.Domain.Entities.siteAggregate;
 
 namespace GMAO.Domain.Entities
 {
@@ -15,5 +16,6 @@ namespace GMAO.Domain.Entities
         public string? Position { get; set; }
         public bool IsPrimary { get; set; }
         public PreferredContactMethod PreferredContactMethod { get; set; }
+        public ICollection<Site> Sites { get; set; } = new List<Site>();
     }
 }

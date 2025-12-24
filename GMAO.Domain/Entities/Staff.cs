@@ -1,5 +1,6 @@
 ﻿using GMAO.Domain.Common;
 using GMAO.Domain.Entities.Auth;
+using GMAO.Domain.Entities.siteAggregate;
 using GMAO.Domain.Events;
 using GMAO.Domain.ValueObjects;
 using System;
@@ -63,6 +64,7 @@ namespace GMAO.Domain.Entities
         public ICollection<Site> SiteCommercials { get; set; }
         public ICollection<ServiceRequest> QuotesFor { get; set; }
         public ICollection<Site> OperationManagerForSites { get; set; }
+        public ICollection<Site> SiteSectorManagers { get; set; }
         public ICollection<Site> Technician1ForSites { get; set; }
         public ICollection<Site> Technician2ForSites { get; set; }
         public ICollection<TenantUser> Tenants { get; set; }

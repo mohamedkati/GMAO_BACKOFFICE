@@ -2,6 +2,22 @@
 global using GMAO.Domain.Enums;
 namespace GMAO.Domain.Enums
 {
+    public enum DocumentType
+    {
+        SitePlan = 1,
+        Photo = 2,
+        Certificate = 3,
+        Contract = 4,
+        TechnicalSheet = 5,
+        InterventionReport = 6,
+        Other = 99
+    }
+    public enum DueDateType
+    {
+        Net = 0,
+        At = 1,
+        EndMonth = 2,
+    }
     public enum PropertyGroupType
     {
         PropertyManagementCompany = 1,  // Société de gestion immobilière

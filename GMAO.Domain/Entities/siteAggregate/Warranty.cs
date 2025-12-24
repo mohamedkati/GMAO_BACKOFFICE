@@ -1,6 +1,6 @@
 ﻿using GMAO.Domain.Common;
 
-namespace GMAO.Domain.Entities
+namespace GMAO.Domain.Entities.siteAggregate
 {
     public class Warranty : BaseEntity<Guid>
     {

@@ -18,7 +18,7 @@ namespace GMAO.Application.Features.property_group.queries.ListAllPropertyGroups
         public async Task<PagedResponse<ListPropertyGroupDto>> Handle(ListAllPropertyGroupsQuery request, CancellationToken cancellationToken)
         {
             var (items, totalCount) = await _groupRepository.GetPropertyGroupsAsync<ListPropertyGroupDto>(request.Search, request.Type, request.Status, request.LegalForm, cancellationToken);
-            return PagedResponse<ListPropertyGroupDto>.Success(items, totalCount, request.PageNumber, request.PageSize);
+            return PagedResponse<ListPropertyGroupDto>.Success(items, totalCount, request.Page, request.PageSize);
         }
 
     }

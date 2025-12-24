@@ -1,4 +1,4 @@
-﻿using GMAO.Domain.Entities;
+﻿using GMAO.Domain.Entities.siteAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -13,8 +13,8 @@ namespace GMAO.Infrastructure.Persistance.Configurations
 
             builder.Property(mp => mp.Name).IsRequired().HasMaxLength(200);
             builder.Property(mp => mp.Frequency).IsRequired().HasConversion<int>();
-            builder.Property(mp => mp.LastExecutionDate);
-            builder.Property(mp => mp.NextExecutionDate);
+            builder.Property(mp => mp.LastExecutionDate).IsRequired(false);
+            builder.Property(mp => mp.NextExecutionDate).IsRequired(false);
             builder.Property(mp => mp.IsActive).IsRequired();
             builder.Property(mp => mp.AlertDaysBefore).IsRequired();
 

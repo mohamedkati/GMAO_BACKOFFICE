@@ -16,7 +16,7 @@ namespace GMAO.Application.Features.Customers.Queries.GetCustomers
         public async Task<PagedResponse<CustomerDto>> Handle(GetCustomersQuery request, CancellationToken cancellationToken)
         {
             var (customers, totalRecords) = await _repository.GetFilteredCustomersAsync(request);
-            return PagedResponse<CustomerDto>.Success(customers, totalRecords, request.PageNumber, request.PageSize);
+            return PagedResponse<CustomerDto>.Success(customers, request.Page, request.PageSize, totalRecords);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using GMAO.Domain.Entities;
+﻿using GMAO.Domain.Entities.siteAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -21,6 +21,7 @@ namespace GMAO.Infrastructure.Persistance.Configurations
                 .HasForeignKey(a => a.AssetCategoryId);
 
             builder.HasIndex(ac => ac.Code);
+            builder.HasIndex(ac=> ac.Name);
             builder.HasIndex(ac => ac.ParentCategoryId);
             builder.HasIndex(ac => ac.TenantId);
             builder.Ignore(ac => ac.DomainEvents);

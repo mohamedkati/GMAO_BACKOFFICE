@@ -4,6 +4,7 @@ using GMAO.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GMAO.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251220175316_update-payment-method")]
+    partial class updatepaymentmethod
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,180 @@ namespace GMAO.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("GMAO.Domain.Entities.Asset", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AssetCategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("CriticalityLevel")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("HealthStatus")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("InstallationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsCommonAsset")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Manufacturer")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("Model")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasDefaultValue("");
+
+                    b.Property<Guid?>("ParentAssetId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Reference")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("SerialNumber")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasDefaultValue("");
+
+                    b.Property<Guid>("SiteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("UnitId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssetCategoryId");
+
+                    b.HasIndex("CriticalityLevel");
+
+                    b.HasIndex("ParentAssetId");
+
+                    b.HasIndex("Reference")
+                        .IsUnique();
+
+                    b.HasIndex("SiteId");
+
+                    b.HasIndex("Status");
+
+                    b.HasIndex("TenantId");
+
+                    b.HasIndex("UnitId");
+
+                    b.ToTable("assets", (string)null);
+                });
+
+            modelBuilder.Entity("GMAO.Domain.Entities.AssetCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasDefaultValue("");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasDefaultValue("");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasDefaultValue("");
+
+                    b.Property<Guid?>("ParentCategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code");
+
+                    b.HasIndex("ParentCategoryId");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("asset_categories", (string)null);
+                });
 
             modelBuilder.Entity("GMAO.Domain.Entities.Auth.Permission", b =>
                 {
@@ -292,35 +469,6 @@ namespace GMAO.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("user_permissions", "auth");
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.ContactType", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("");
-
-                    b.Property<int?>("Priority")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ContactType");
                 });
 
             modelBuilder.Entity("GMAO.Domain.Entities.ContractConsumption", b =>
@@ -1243,6 +1391,264 @@ namespace GMAO.Infrastructure.Migrations
                     b.HasIndex("Year");
 
                     b.ToTable("maintenance_budgets", (string)null);
+                });
+
+            modelBuilder.Entity("GMAO.Domain.Entities.MaintenancePlan", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AlertDaysBefore")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("AssetId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Frequency")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastExecutionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasDefaultValue("");
+
+                    b.Property<DateTime?>("NextExecutionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssetId");
+
+                    b.HasIndex("NextExecutionDate");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("maintenance_plans", (string)null);
+                });
+
+            modelBuilder.Entity("GMAO.Domain.Entities.MaintenanceTask", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)")
+                        .HasDefaultValue("");
+
+                    b.Property<int?>("EstimatedDurationMinutes")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("MaintenancePlanId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("RequiredSkillId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("TaskOrder")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MaintenancePlanId");
+
+                    b.HasIndex("RequiredSkillId");
+
+                    b.ToTable("maintenance_tasks", (string)null);
+                });
+
+            modelBuilder.Entity("GMAO.Domain.Entities.MarketType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MarketType");
+                });
+
+            modelBuilder.Entity("GMAO.Domain.Entities.Occupant", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CompanyName")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasDefaultValue("");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Email")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasDefaultValue("");
+
+                    b.Property<bool>("HasPortalAccess")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("Mobile")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasDefaultValue("");
+
+                    b.Property<DateTime?>("MoveInDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("MoveOutDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PersonType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Phone")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasDefaultValue("");
+
+                    b.Property<int?>("PreferredContactMethod")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UnitId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email");
+
+                    b.HasIndex("TenantId");
+
+                    b.HasIndex("Type");
+
+                    b.HasIndex("UnitId");
+
+                    b.ToTable("occupants", (string)null);
                 });
 
             modelBuilder.Entity("GMAO.Domain.Entities.Payment", b =>
@@ -2478,6 +2884,222 @@ namespace GMAO.Infrastructure.Migrations
                     b.ToTable("service_requests", (string)null);
                 });
 
+            modelBuilder.Entity("GMAO.Domain.Entities.Site", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("BuildingYear")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("ClientContactId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("");
+
+                    b.Property<Guid?>("CommercialId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("FloorsCount")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("MarketTypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasDefaultValue("");
+
+                    b.Property<Guid?>("OperationsManagerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Reference")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasDefaultValue("");
+
+                    b.Property<Guid?>("SectorManagerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("SiteClientTypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("Technician1Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("Technician2Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal?>("TotalArea")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UnitsCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientContactId");
+
+                    b.HasIndex("CommercialId");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("MarketTypeId");
+
+                    b.HasIndex("OperationsManagerId");
+
+                    b.HasIndex("Reference")
+                        .IsUnique();
+
+                    b.HasIndex("SectorManagerId");
+
+                    b.HasIndex("SiteClientTypeId");
+
+                    b.HasIndex("Technician1Id");
+
+                    b.HasIndex("Technician2Id");
+
+                    b.HasIndex("TenantId");
+
+                    b.HasIndex("Type");
+
+                    b.ToTable("sites", (string)null);
+                });
+
+            modelBuilder.Entity("GMAO.Domain.Entities.SiteCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SiteCategory");
+                });
+
+            modelBuilder.Entity("GMAO.Domain.Entities.SiteClientType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SiteCategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SiteCategoryId");
+
+                    b.ToTable("SiteClientType");
+                });
+
             modelBuilder.Entity("GMAO.Domain.Entities.Skill", b =>
                 {
                     b.Property<Guid>("Id")
@@ -2836,42 +3458,6 @@ namespace GMAO.Infrastructure.Migrations
                     b.ToTable("supplier_catalog_items", (string)null);
                 });
 
-            modelBuilder.Entity("GMAO.Domain.Entities.TVA", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasDefaultValue("");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)")
-                        .HasDefaultValue("");
-
-                    b.Property<float>("ValuRate")
-                        .HasColumnType("real");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("vats", (string)null);
-                });
-
             modelBuilder.Entity("GMAO.Domain.Entities.Technician", b =>
                 {
                     b.Property<Guid>("Id")
@@ -3174,6 +3760,88 @@ namespace GMAO.Infrastructure.Migrations
                     b.ToTable("time_entries", (string)null);
                 });
 
+            modelBuilder.Entity("GMAO.Domain.Entities.Unit", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("DoorNumber")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("Floor")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasDefaultValue("");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("OwnershipSharesCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reference")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasDefaultValue("");
+
+                    b.Property<int?>("Rooms")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("SiteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("SurfaceArea")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Reference")
+                        .IsUnique();
+
+                    b.HasIndex("SiteId");
+
+                    b.HasIndex("Status");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("units", (string)null);
+                });
+
             modelBuilder.Entity("GMAO.Domain.Entities.UsedPart", b =>
                 {
                     b.Property<Guid>("Id")
@@ -3238,6 +3906,92 @@ namespace GMAO.Infrastructure.Migrations
                     b.HasIndex("WorkOrderId");
 
                     b.ToTable("used_parts", (string)null);
+                });
+
+            modelBuilder.Entity("GMAO.Domain.Entities.Warranty", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AlertDaysBefore")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("AssetId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("ClaimedAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ClaimsCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ContactEmail")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("ContactPhone")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("CoveredItems")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)")
+                        .HasDefaultValue("");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Exclusions")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)")
+                        .HasDefaultValue("");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ProviderName")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasDefaultValue("");
+
+                    b.Property<bool>("SendExpirationAlert")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<string>("WarrantyNumber")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasDefaultValue("");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssetId");
+
+                    b.HasIndex("EndDate");
+
+                    b.ToTable("warranties", (string)null);
                 });
 
             modelBuilder.Entity("GMAO.Domain.Entities.WorkOrder", b =>
@@ -3566,1141 +4320,6 @@ namespace GMAO.Infrastructure.Migrations
                     b.ToTable("work_order_tasks", (string)null);
                 });
 
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.Asset", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("AssetCategoryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("CriticalityLevel")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("HealthStatus")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("InstallationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsCommonAsset")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("LastModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Manufacturer")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasDefaultValue("");
-
-                    b.Property<string>("Model")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasDefaultValue("");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
-                        .HasDefaultValue("");
-
-                    b.Property<Guid?>("ParentAssetId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Reference")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasDefaultValue("");
-
-                    b.Property<string>("SerialNumber")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasDefaultValue("");
-
-                    b.Property<Guid>("SiteId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("TenantId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("UnitId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AssetCategoryId");
-
-                    b.HasIndex("CriticalityLevel");
-
-                    b.HasIndex("ParentAssetId");
-
-                    b.HasIndex("Reference")
-                        .IsUnique();
-
-                    b.HasIndex("SiteId");
-
-                    b.HasIndex("Status");
-
-                    b.HasIndex("TenantId");
-
-                    b.HasIndex("UnitId");
-
-                    b.ToTable("assets", (string)null);
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.AssetCategory", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Code")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasDefaultValue("");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Description")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)")
-                        .HasDefaultValue("");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("LastModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasDefaultValue("");
-
-                    b.Property<Guid?>("ParentCategoryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TenantId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Code");
-
-                    b.HasIndex("Name");
-
-                    b.HasIndex("ParentCategoryId");
-
-                    b.HasIndex("TenantId");
-
-                    b.ToTable("asset_categories", (string)null);
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.MaintenancePlan", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("AlertDaysBefore")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("AssetId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Frequency")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastExecutionDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("LastModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("LastModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
-                        .HasDefaultValue("");
-
-                    b.Property<DateTime?>("NextExecutionDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("TenantId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AssetId");
-
-                    b.HasIndex("NextExecutionDate");
-
-                    b.HasIndex("TenantId");
-
-                    b.ToTable("maintenance_plans", (string)null);
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.MaintenanceTask", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)")
-                        .HasDefaultValue("");
-
-                    b.Property<int?>("EstimatedDurationMinutes")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid>("MaintenancePlanId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("RequiredSkillId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("TaskOrder")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MaintenancePlanId");
-
-                    b.HasIndex("RequiredSkillId");
-
-                    b.ToTable("maintenance_tasks", (string)null);
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.Occupant", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CompanyName")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
-                        .HasDefaultValue("");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Email")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
-                        .HasDefaultValue("");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasDefaultValue("");
-
-                    b.Property<bool>("HasPortalAccess")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("LastModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasDefaultValue("");
-
-                    b.Property<string>("Mobile")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasDefaultValue("");
-
-                    b.Property<DateTime?>("MoveInDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("MoveOutDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("PersonType")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Phone")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasDefaultValue("");
-
-                    b.Property<int?>("PreferredContactMethod")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("TenantId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("UnitId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Email");
-
-                    b.HasIndex("TenantId");
-
-                    b.HasIndex("Type");
-
-                    b.HasIndex("UnitId");
-
-                    b.ToTable("occupants", (string)null);
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.SectorType", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Description")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)")
-                        .HasDefaultValue("");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("LastModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TenantId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("sector_types", (string)null);
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.Site", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int?>("BuildingYear")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("ClientContactId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ClientTypeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Comment")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(4000)
-                        .HasColumnType("nvarchar(4000)")
-                        .HasDefaultValue("");
-
-                    b.Property<string>("CommentReport")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(4000)
-                        .HasColumnType("nvarchar(4000)")
-                        .HasDefaultValue("");
-
-                    b.Property<Guid?>("CommercialId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CustomerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int?>("FloorsCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("InvoiceMailAddress")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)")
-                        .HasDefaultValue("");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("LastModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("MainMailAddress")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)")
-                        .HasDefaultValue("");
-
-                    b.Property<Guid>("MarketTypeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
-                        .HasDefaultValue("");
-
-                    b.Property<Guid?>("OperationsManagerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("PaymentMethodId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Reference")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasDefaultValue("");
-
-                    b.Property<Guid?>("SectorManagerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Siren")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasDefaultValue("");
-
-                    b.Property<string>("Siret")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasDefaultValue("");
-
-                    b.Property<Guid?>("Technician1Id")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("Technician2Id")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TenantId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal?>("TotalArea")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UnitsCount")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("VatId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClientContactId");
-
-                    b.HasIndex("ClientTypeId");
-
-                    b.HasIndex("CommercialId");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("MarketTypeId");
-
-                    b.HasIndex("OperationsManagerId");
-
-                    b.HasIndex("PaymentMethodId");
-
-                    b.HasIndex("Reference")
-                        .IsUnique();
-
-                    b.HasIndex("SectorManagerId");
-
-                    b.HasIndex("Technician1Id");
-
-                    b.HasIndex("Technician2Id");
-
-                    b.HasIndex("TenantId");
-
-                    b.HasIndex("Type");
-
-                    b.HasIndex("VatId");
-
-                    b.ToTable("sites", (string)null);
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.SiteCategory", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasDefaultValue("");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Description")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)")
-                        .HasDefaultValue("");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("LastModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TenantId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("site_categories", (string)null);
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.SiteClientType", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasDefaultValue("");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("LastModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("SiteCategoryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TenantId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SiteCategoryId");
-
-                    b.ToTable("site_client_types", (string)null);
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.SiteContact", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("AvailabilityHours")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasDefaultValue("");
-
-                    b.Property<string>("CellPhone")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasDefaultValue("");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
-                        .HasDefaultValue("");
-
-                    b.Property<string>("Fax")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("");
-
-                    b.Property<string>("Firstname")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasDefaultValue("");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsPrimary")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<DateTime?>("LastModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("LastModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Lastname")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasDefaultValue("");
-
-                    b.Property<string>("Note")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("");
-
-                    b.Property<Guid>("PersonTypeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasDefaultValue("");
-
-                    b.Property<int>("PreferredContactMethod")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("SiteContactCategoryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("SiteId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TenantId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Email");
-
-                    b.HasIndex("SiteContactCategoryId");
-
-                    b.HasIndex("SiteId");
-
-                    b.HasIndex("TenantId");
-
-                    b.HasIndex("Firstname", "Lastname");
-
-                    b.ToTable("site_contacts", (string)null);
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.SiteDocument", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Description")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)")
-                        .HasDefaultValue("");
-
-                    b.Property<DateTime?>("ExpirationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("FileName")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(180)
-                        .HasColumnType("nvarchar(180)")
-                        .HasDefaultValue("");
-
-                    b.Property<string>("FilePath")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)")
-                        .HasDefaultValue("");
-
-                    b.Property<long>("FileSize")
-                        .HasColumnType("bigint");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsPlan")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<DateTime?>("LastModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("LastModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("MimeType")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasDefaultValue("");
-
-                    b.Property<bool>("SendExpirationAlert")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<Guid>("SiteId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TenantId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SiteId");
-
-                    b.ToTable("site_documents", (string)null);
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.SiteKeeper", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CellPhone")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasDefaultValue("");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasDefaultValue("");
-
-                    b.Property<string>("Firstname")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasDefaultValue("");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("LastModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Lastname")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasDefaultValue("");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasDefaultValue("");
-
-                    b.Property<Guid>("SiteId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TenantId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SiteId");
-
-                    b.ToTable("site_keepers", (string)null);
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.Unit", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("DoorNumber")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasDefaultValue("");
-
-                    b.Property<string>("Floor")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasDefaultValue("");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("LastModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("OwnershipSharesCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Reference")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasDefaultValue("");
-
-                    b.Property<int?>("Rooms")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("SiteId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<decimal?>("SurfaceArea")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<Guid>("TenantId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Reference")
-                        .IsUnique();
-
-                    b.HasIndex("SiteId");
-
-                    b.HasIndex("Status");
-
-                    b.HasIndex("TenantId");
-
-                    b.ToTable("units", (string)null);
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.Warranty", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("AlertDaysBefore")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("AssetId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("ClaimedAmount")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("ClaimsCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ContactEmail")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
-                        .HasDefaultValue("");
-
-                    b.Property<string>("ContactPhone")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasDefaultValue("");
-
-                    b.Property<string>("CoveredItems")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)")
-                        .HasDefaultValue("");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Exclusions")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)")
-                        .HasDefaultValue("");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ProviderName")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
-                        .HasDefaultValue("");
-
-                    b.Property<bool>("SendExpirationAlert")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.Property<string>("WarrantyNumber")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasDefaultValue("");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AssetId");
-
-                    b.HasIndex("EndDate");
-
-                    b.ToTable("warranties", (string)null);
-                });
-
             modelBuilder.Entity("GMAO.Infrastructure.Persistance.Identity.ApplicationRole", b =>
                 {
                     b.Property<Guid>("Id")
@@ -4955,6 +4574,100 @@ namespace GMAO.Infrastructure.Migrations
                     b.ToTable("UserTokens", "auth");
                 });
 
+            modelBuilder.Entity("GMAO.Domain.Entities.Asset", b =>
+                {
+                    b.HasOne("GMAO.Domain.Entities.AssetCategory", "Category")
+                        .WithMany("Assets")
+                        .HasForeignKey("AssetCategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("GMAO.Domain.Entities.Asset", "ParentAsset")
+                        .WithMany()
+                        .HasForeignKey("ParentAssetId");
+
+                    b.HasOne("GMAO.Domain.Entities.Site", "Site")
+                        .WithMany("Assets")
+                        .HasForeignKey("SiteId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("GMAO.Domain.Entities.Unit", "Unit")
+                        .WithMany("Assets")
+                        .HasForeignKey("UnitId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.OwnsOne("GMAO.Domain.ValueObjects.AssetReliabilityMetrics", "ReliabilityMetrics", b1 =>
+                        {
+                            b1.Property<Guid>("AssetId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<double>("AvailabilityPercent")
+                                .ValueGeneratedOnAdd()
+                                .HasPrecision(5, 2)
+                                .HasColumnType("float(5)")
+                                .HasDefaultValue(0.0);
+
+                            b1.Property<double>("FailuresPerYear")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("float")
+                                .HasDefaultValue(0.0);
+
+                            b1.Property<DateTime?>("LastFailureDate")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<DateTime?>("LastMaintenanceDate")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<double>("MTBF")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("float")
+                                .HasDefaultValue(0.0);
+
+                            b1.Property<double>("MTTR")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("float")
+                                .HasDefaultValue(0.0);
+
+                            b1.Property<int>("TotalFailures")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int")
+                                .HasDefaultValue(0);
+
+                            b1.Property<int>("TotalMaintenanceHours")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int")
+                                .HasDefaultValue(0);
+
+                            b1.HasKey("AssetId");
+
+                            b1.ToTable("assets");
+
+                            b1.WithOwner()
+                                .HasForeignKey("AssetId");
+                        });
+
+                    b.Navigation("Category");
+
+                    b.Navigation("ParentAsset");
+
+                    b.Navigation("ReliabilityMetrics");
+
+                    b.Navigation("Site");
+
+                    b.Navigation("Unit");
+                });
+
+            modelBuilder.Entity("GMAO.Domain.Entities.AssetCategory", b =>
+                {
+                    b.HasOne("GMAO.Domain.Entities.AssetCategory", "ParentCategory")
+                        .WithMany("SubCategories")
+                        .HasForeignKey("ParentCategoryId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("ParentCategory");
+                });
+
             modelBuilder.Entity("GMAO.Domain.Entities.Auth.RolePermission", b =>
                 {
                     b.HasOne("GMAO.Domain.Entities.Auth.Permission", "Permission")
@@ -5050,7 +4763,7 @@ namespace GMAO.Infrastructure.Migrations
 
             modelBuilder.Entity("GMAO.Domain.Entities.Customer", b =>
                 {
-                    b.HasOne("GMAO.Domain.Entities.siteAggregate.Asset", null)
+                    b.HasOne("GMAO.Domain.Entities.Asset", null)
                         .WithMany("ClientsCommercial")
                         .HasForeignKey("AssetId");
 
@@ -5436,12 +5149,12 @@ namespace GMAO.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("GMAO.Domain.Entities.siteAggregate.Occupant", "Occupant")
+                    b.HasOne("GMAO.Domain.Entities.Occupant", "Occupant")
                         .WithMany()
                         .HasForeignKey("OccupantId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("GMAO.Domain.Entities.siteAggregate.Unit", "Unit")
+                    b.HasOne("GMAO.Domain.Entities.Unit", "Unit")
                         .WithMany()
                         .HasForeignKey("UnitId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -5463,6 +5176,46 @@ namespace GMAO.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("GMAO.Domain.Entities.MaintenancePlan", b =>
+                {
+                    b.HasOne("GMAO.Domain.Entities.Asset", "Asset")
+                        .WithMany("MaintenancePlans")
+                        .HasForeignKey("AssetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Asset");
+                });
+
+            modelBuilder.Entity("GMAO.Domain.Entities.MaintenanceTask", b =>
+                {
+                    b.HasOne("GMAO.Domain.Entities.MaintenancePlan", "MaintenancePlan")
+                        .WithMany("Tasks")
+                        .HasForeignKey("MaintenancePlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GMAO.Domain.Entities.Skill", "RequiredSkill")
+                        .WithMany()
+                        .HasForeignKey("RequiredSkillId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("MaintenancePlan");
+
+                    b.Navigation("RequiredSkill");
+                });
+
+            modelBuilder.Entity("GMAO.Domain.Entities.Occupant", b =>
+                {
+                    b.HasOne("GMAO.Domain.Entities.Unit", "Unit")
+                        .WithMany("Occupants")
+                        .HasForeignKey("UnitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Unit");
                 });
 
             modelBuilder.Entity("GMAO.Domain.Entities.Payment", b =>
@@ -5680,7 +5433,7 @@ namespace GMAO.Infrastructure.Migrations
                         .WithOne("Quote")
                         .HasForeignKey("GMAO.Domain.Entities.Quote", "ServiceRequestId");
 
-                    b.HasOne("GMAO.Domain.Entities.siteAggregate.Site", null)
+                    b.HasOne("GMAO.Domain.Entities.Site", null)
                         .WithMany("Quotes")
                         .HasForeignKey("SiteId");
 
@@ -5715,7 +5468,7 @@ namespace GMAO.Infrastructure.Migrations
 
             modelBuilder.Entity("GMAO.Domain.Entities.ServiceRequest", b =>
                 {
-                    b.HasOne("GMAO.Domain.Entities.siteAggregate.Asset", "Asset")
+                    b.HasOne("GMAO.Domain.Entities.Asset", "Asset")
                         .WithMany("ServiceRequests")
                         .HasForeignKey("AssetId")
                         .OnDelete(DeleteBehavior.SetNull);
@@ -5730,7 +5483,7 @@ namespace GMAO.Infrastructure.Migrations
                         .WithMany("Events")
                         .HasForeignKey("EventReasonId");
 
-                    b.HasOne("GMAO.Domain.Entities.siteAggregate.Occupant", "Occupant")
+                    b.HasOne("GMAO.Domain.Entities.Occupant", "Occupant")
                         .WithMany("ServiceRequests")
                         .HasForeignKey("OccupantId")
                         .OnDelete(DeleteBehavior.SetNull);
@@ -5739,13 +5492,13 @@ namespace GMAO.Infrastructure.Migrations
                         .WithMany("QuotesFor")
                         .HasForeignKey("QuoteForId");
 
-                    b.HasOne("GMAO.Domain.Entities.siteAggregate.Site", "Site")
+                    b.HasOne("GMAO.Domain.Entities.Site", "Site")
                         .WithMany("ServiceRequests")
                         .HasForeignKey("SiteId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("GMAO.Domain.Entities.siteAggregate.Unit", "Unit")
+                    b.HasOne("GMAO.Domain.Entities.Unit", "Unit")
                         .WithMany("ServiceRequests")
                         .HasForeignKey("UnitId")
                         .OnDelete(DeleteBehavior.NoAction);
@@ -5763,6 +5516,159 @@ namespace GMAO.Infrastructure.Migrations
                     b.Navigation("Site");
 
                     b.Navigation("Unit");
+                });
+
+            modelBuilder.Entity("GMAO.Domain.Entities.Site", b =>
+                {
+                    b.HasOne("GMAO.Domain.Entities.CustomerContact", "ClientContact")
+                        .WithMany()
+                        .HasForeignKey("ClientContactId");
+
+                    b.HasOne("GMAO.Domain.Entities.Staff", "Commercial")
+                        .WithMany("SiteCommercials")
+                        .HasForeignKey("CommercialId");
+
+                    b.HasOne("GMAO.Domain.Entities.Customer", "Customer")
+                        .WithMany("Sites")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("GMAO.Domain.Entities.MarketType", "MarketType")
+                        .WithMany("Sites")
+                        .HasForeignKey("MarketTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GMAO.Domain.Entities.Staff", "OperationsManager")
+                        .WithMany("OperationManagerForSites")
+                        .HasForeignKey("OperationsManagerId");
+
+                    b.HasOne("GMAO.Domain.Entities.Staff", "SectorManager")
+                        .WithMany()
+                        .HasForeignKey("SectorManagerId");
+
+                    b.HasOne("GMAO.Domain.Entities.SiteClientType", "SiteClientType")
+                        .WithMany("Sites")
+                        .HasForeignKey("SiteClientTypeId");
+
+                    b.HasOne("GMAO.Domain.Entities.Staff", "Technician1")
+                        .WithMany("Technician1ForSites")
+                        .HasForeignKey("Technician1Id");
+
+                    b.HasOne("GMAO.Domain.Entities.Staff", "Technician2")
+                        .WithMany("Technician2ForSites")
+                        .HasForeignKey("Technician2Id");
+
+                    b.OwnsOne("GMAO.Domain.ValueObjects.Address", "Address", b1 =>
+                        {
+                            b1.Property<Guid>("SiteId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("City")
+                                .IsRequired()
+                                .ValueGeneratedOnAdd()
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)")
+                                .HasDefaultValue("");
+
+                            b1.Property<string>("Country")
+                                .IsRequired()
+                                .ValueGeneratedOnAdd()
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)")
+                                .HasDefaultValue("");
+
+                            b1.Property<string>("FirstAddressLine")
+                                .IsRequired()
+                                .ValueGeneratedOnAdd()
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)")
+                                .HasDefaultValue("");
+
+                            b1.Property<string>("PostalCode")
+                                .IsRequired()
+                                .ValueGeneratedOnAdd()
+                                .HasMaxLength(20)
+                                .HasColumnType("nvarchar(20)")
+                                .HasDefaultValue("");
+
+                            b1.Property<string>("SecondAddressLine")
+                                .IsRequired()
+                                .ValueGeneratedOnAdd()
+                                .HasMaxLength(200)
+                                .HasColumnType("nvarchar(200)")
+                                .HasDefaultValue("");
+
+                            b1.Property<string>("Street")
+                                .IsRequired()
+                                .ValueGeneratedOnAdd()
+                                .HasMaxLength(200)
+                                .HasColumnType("nvarchar(200)")
+                                .HasDefaultValue("");
+
+                            b1.HasKey("SiteId");
+
+                            b1.ToTable("sites");
+
+                            b1.WithOwner()
+                                .HasForeignKey("SiteId");
+                        });
+
+                    b.OwnsOne("GMAO.Domain.ValueObjects.GeoCoordinates", "Coordinates", b1 =>
+                        {
+                            b1.Property<Guid>("SiteId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<double>("Latitude")
+                                .HasPrecision(10, 7)
+                                .HasColumnType("float(10)");
+
+                            b1.Property<double>("Longitude")
+                                .HasPrecision(10, 7)
+                                .HasColumnType("float(10)");
+
+                            b1.HasKey("SiteId");
+
+                            b1.ToTable("sites");
+
+                            b1.WithOwner()
+                                .HasForeignKey("SiteId");
+                        });
+
+                    b.Navigation("Address")
+                        .IsRequired();
+
+                    b.Navigation("ClientContact");
+
+                    b.Navigation("Commercial");
+
+                    b.Navigation("Coordinates");
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("MarketType");
+
+                    b.Navigation("OperationsManager");
+
+                    b.Navigation("SectorManager");
+
+                    b.Navigation("SiteClientType");
+
+                    b.Navigation("Technician1");
+
+                    b.Navigation("Technician2");
+                });
+
+            modelBuilder.Entity("GMAO.Domain.Entities.SiteClientType", b =>
+                {
+                    b.HasOne("GMAO.Domain.Entities.SiteCategory", "SiteCategory")
+                        .WithMany("SiteClientTypes")
+                        .HasForeignKey("SiteCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SiteCategory");
                 });
 
             modelBuilder.Entity("GMAO.Domain.Entities.Staff", b =>
@@ -6176,6 +6082,17 @@ namespace GMAO.Infrastructure.Migrations
                     b.Navigation("WorkOrder");
                 });
 
+            modelBuilder.Entity("GMAO.Domain.Entities.Unit", b =>
+                {
+                    b.HasOne("GMAO.Domain.Entities.Site", "Site")
+                        .WithMany("Units")
+                        .HasForeignKey("SiteId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Site");
+                });
+
             modelBuilder.Entity("GMAO.Domain.Entities.UsedPart", b =>
                 {
                     b.HasOne("GMAO.Domain.Entities.InventoryItem", "InventoryItem")
@@ -6192,6 +6109,17 @@ namespace GMAO.Infrastructure.Migrations
                     b.Navigation("InventoryItem");
 
                     b.Navigation("WorkOrder");
+                });
+
+            modelBuilder.Entity("GMAO.Domain.Entities.Warranty", b =>
+                {
+                    b.HasOne("GMAO.Domain.Entities.Asset", "Asset")
+                        .WithMany("Warranties")
+                        .HasForeignKey("AssetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Asset");
                 });
 
             modelBuilder.Entity("GMAO.Domain.Entities.WorkOrder", b =>
@@ -6264,539 +6192,6 @@ namespace GMAO.Infrastructure.Migrations
                     b.Navigation("WorkOrder");
                 });
 
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.Asset", b =>
-                {
-                    b.HasOne("GMAO.Domain.Entities.siteAggregate.AssetCategory", "Category")
-                        .WithMany("Assets")
-                        .HasForeignKey("AssetCategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("GMAO.Domain.Entities.siteAggregate.Asset", "ParentAsset")
-                        .WithMany()
-                        .HasForeignKey("ParentAssetId");
-
-                    b.HasOne("GMAO.Domain.Entities.siteAggregate.Site", "Site")
-                        .WithMany("Assets")
-                        .HasForeignKey("SiteId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("GMAO.Domain.Entities.siteAggregate.Unit", "Unit")
-                        .WithMany("Assets")
-                        .HasForeignKey("UnitId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.OwnsOne("GMAO.Domain.ValueObjects.AssetLocation", "Location", b1 =>
-                        {
-                            b1.Property<Guid>("AssetId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("LocationDescription")
-                                .ValueGeneratedOnAdd()
-                                .HasMaxLength(255)
-                                .HasColumnType("nvarchar(255)")
-                                .HasDefaultValue("");
-
-                            b1.Property<Guid?>("PlanDocumentId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<double?>("XPosition")
-                                .HasColumnType("float");
-
-                            b1.Property<double?>("YPosition")
-                                .HasColumnType("float");
-
-                            b1.HasKey("AssetId");
-
-                            b1.HasIndex("PlanDocumentId")
-                                .IsUnique()
-                                .HasFilter("[Location_PlanDocumentId] IS NOT NULL");
-
-                            b1.ToTable("assets");
-
-                            b1.WithOwner()
-                                .HasForeignKey("AssetId");
-
-                            b1.HasOne("GMAO.Domain.Entities.siteAggregate.SiteDocument", "PlanDocument")
-                                .WithOne()
-                                .HasForeignKey("GMAO.Domain.Entities.siteAggregate.Asset.Location#GMAO.Domain.ValueObjects.AssetLocation", "PlanDocumentId")
-                                .OnDelete(DeleteBehavior.Cascade)
-                                .IsRequired();
-
-                            b1.Navigation("PlanDocument");
-                        });
-
-                    b.OwnsOne("GMAO.Domain.ValueObjects.AssetReliabilityMetrics", "ReliabilityMetrics", b1 =>
-                        {
-                            b1.Property<Guid>("AssetId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<double>("AvailabilityPercent")
-                                .ValueGeneratedOnAdd()
-                                .HasPrecision(5, 2)
-                                .HasColumnType("float(5)")
-                                .HasDefaultValue(0.0);
-
-                            b1.Property<double>("FailuresPerYear")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("float")
-                                .HasDefaultValue(0.0);
-
-                            b1.Property<DateTime?>("LastFailureDate")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<DateTime?>("LastMaintenanceDate")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<double>("MTBF")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("float")
-                                .HasDefaultValue(0.0);
-
-                            b1.Property<double>("MTTR")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("float")
-                                .HasDefaultValue(0.0);
-
-                            b1.Property<int>("TotalFailures")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int")
-                                .HasDefaultValue(0);
-
-                            b1.Property<int>("TotalMaintenanceHours")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int")
-                                .HasDefaultValue(0);
-
-                            b1.HasKey("AssetId");
-
-                            b1.ToTable("assets");
-
-                            b1.WithOwner()
-                                .HasForeignKey("AssetId");
-                        });
-
-                    b.Navigation("Category");
-
-                    b.Navigation("Location");
-
-                    b.Navigation("ParentAsset");
-
-                    b.Navigation("ReliabilityMetrics");
-
-                    b.Navigation("Site");
-
-                    b.Navigation("Unit");
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.AssetCategory", b =>
-                {
-                    b.HasOne("GMAO.Domain.Entities.siteAggregate.AssetCategory", "ParentCategory")
-                        .WithMany("SubCategories")
-                        .HasForeignKey("ParentCategoryId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("ParentCategory");
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.MaintenancePlan", b =>
-                {
-                    b.HasOne("GMAO.Domain.Entities.siteAggregate.Asset", "Asset")
-                        .WithMany("MaintenancePlans")
-                        .HasForeignKey("AssetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Asset");
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.MaintenanceTask", b =>
-                {
-                    b.HasOne("GMAO.Domain.Entities.siteAggregate.MaintenancePlan", "MaintenancePlan")
-                        .WithMany("Tasks")
-                        .HasForeignKey("MaintenancePlanId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GMAO.Domain.Entities.Skill", "RequiredSkill")
-                        .WithMany("MaintenanceTaskSkills")
-                        .HasForeignKey("RequiredSkillId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("MaintenancePlan");
-
-                    b.Navigation("RequiredSkill");
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.Occupant", b =>
-                {
-                    b.HasOne("GMAO.Domain.Entities.siteAggregate.Unit", "Unit")
-                        .WithMany("Occupants")
-                        .HasForeignKey("UnitId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Unit");
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.Site", b =>
-                {
-                    b.HasOne("GMAO.Domain.Entities.CustomerContact", "ClientContact")
-                        .WithMany("Sites")
-                        .HasForeignKey("ClientContactId");
-
-                    b.HasOne("GMAO.Domain.Entities.siteAggregate.SiteClientType", "ClientType")
-                        .WithMany("Sites")
-                        .HasForeignKey("ClientTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GMAO.Domain.Entities.Staff", "Commercial")
-                        .WithMany("SiteCommercials")
-                        .HasForeignKey("CommercialId");
-
-                    b.HasOne("GMAO.Domain.Entities.Customer", "Customer")
-                        .WithMany("Sites")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("GMAO.Domain.Entities.siteAggregate.SectorType", "SectorType")
-                        .WithMany("Sites")
-                        .HasForeignKey("MarketTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GMAO.Domain.Entities.Staff", "OperationsManager")
-                        .WithMany("OperationManagerForSites")
-                        .HasForeignKey("OperationsManagerId");
-
-                    b.HasOne("GMAO.Domain.Entities.PaymentMethod", "PaymentMethod")
-                        .WithMany("Sites")
-                        .HasForeignKey("PaymentMethodId");
-
-                    b.HasOne("GMAO.Domain.Entities.Staff", "SectorManager")
-                        .WithMany("SiteSectorManagers")
-                        .HasForeignKey("SectorManagerId");
-
-                    b.HasOne("GMAO.Domain.Entities.Staff", "Technician1")
-                        .WithMany("Technician1ForSites")
-                        .HasForeignKey("Technician1Id");
-
-                    b.HasOne("GMAO.Domain.Entities.Staff", "Technician2")
-                        .WithMany("Technician2ForSites")
-                        .HasForeignKey("Technician2Id");
-
-                    b.HasOne("GMAO.Domain.Entities.TVA", "VAT")
-                        .WithMany("Sites")
-                        .HasForeignKey("VatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.OwnsOne("GMAO.Domain.ValueObjects.Address", "Address", b1 =>
-                        {
-                            b1.Property<Guid>("SiteId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("City")
-                                .IsRequired()
-                                .ValueGeneratedOnAdd()
-                                .HasMaxLength(100)
-                                .HasColumnType("nvarchar(100)")
-                                .HasDefaultValue("");
-
-                            b1.Property<string>("Country")
-                                .IsRequired()
-                                .ValueGeneratedOnAdd()
-                                .HasMaxLength(100)
-                                .HasColumnType("nvarchar(100)")
-                                .HasDefaultValue("");
-
-                            b1.Property<string>("FirstAddressLine")
-                                .IsRequired()
-                                .ValueGeneratedOnAdd()
-                                .HasMaxLength(100)
-                                .HasColumnType("nvarchar(100)")
-                                .HasDefaultValue("");
-
-                            b1.Property<string>("PostalCode")
-                                .IsRequired()
-                                .ValueGeneratedOnAdd()
-                                .HasMaxLength(20)
-                                .HasColumnType("nvarchar(20)")
-                                .HasDefaultValue("");
-
-                            b1.Property<string>("SecondAddressLine")
-                                .IsRequired()
-                                .ValueGeneratedOnAdd()
-                                .HasMaxLength(200)
-                                .HasColumnType("nvarchar(200)")
-                                .HasDefaultValue("");
-
-                            b1.Property<string>("Street")
-                                .IsRequired()
-                                .ValueGeneratedOnAdd()
-                                .HasMaxLength(200)
-                                .HasColumnType("nvarchar(200)")
-                                .HasDefaultValue("");
-
-                            b1.HasKey("SiteId");
-
-                            b1.ToTable("sites");
-
-                            b1.WithOwner()
-                                .HasForeignKey("SiteId");
-                        });
-
-                    b.OwnsOne("GMAO.Domain.ValueObjects.Address", "BillingAddress", b1 =>
-                        {
-                            b1.Property<Guid>("SiteId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("City")
-                                .IsRequired()
-                                .ValueGeneratedOnAdd()
-                                .HasMaxLength(100)
-                                .HasColumnType("nvarchar(100)")
-                                .HasDefaultValue("")
-                                .HasColumnName("BillingCity");
-
-                            b1.Property<string>("Country")
-                                .IsRequired()
-                                .ValueGeneratedOnAdd()
-                                .HasMaxLength(100)
-                                .HasColumnType("nvarchar(100)")
-                                .HasDefaultValue("")
-                                .HasColumnName("BillingCountry");
-
-                            b1.Property<string>("FirstAddressLine")
-                                .IsRequired()
-                                .ValueGeneratedOnAdd()
-                                .HasMaxLength(100)
-                                .HasColumnType("nvarchar(100)")
-                                .HasDefaultValue("")
-                                .HasColumnName("BillingLigne1");
-
-                            b1.Property<string>("PostalCode")
-                                .IsRequired()
-                                .ValueGeneratedOnAdd()
-                                .HasMaxLength(20)
-                                .HasColumnType("nvarchar(20)")
-                                .HasDefaultValue("")
-                                .HasColumnName("BillingPostalCode");
-
-                            b1.Property<string>("SecondAddressLine")
-                                .IsRequired()
-                                .ValueGeneratedOnAdd()
-                                .HasMaxLength(200)
-                                .HasColumnType("nvarchar(200)")
-                                .HasDefaultValue("")
-                                .HasColumnName("BillingLigne2");
-
-                            b1.Property<string>("Street")
-                                .IsRequired()
-                                .ValueGeneratedOnAdd()
-                                .HasMaxLength(200)
-                                .HasColumnType("nvarchar(200)")
-                                .HasDefaultValue("")
-                                .HasColumnName("BillingStreet");
-
-                            b1.HasKey("SiteId");
-
-                            b1.ToTable("sites");
-
-                            b1.WithOwner()
-                                .HasForeignKey("SiteId");
-                        });
-
-                    b.OwnsOne("GMAO.Domain.ValueObjects.GeoCoordinates", "Coordinates", b1 =>
-                        {
-                            b1.Property<Guid>("SiteId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<double>("Latitude")
-                                .HasPrecision(10, 7)
-                                .HasColumnType("float(10)");
-
-                            b1.Property<double>("Longitude")
-                                .HasPrecision(10, 7)
-                                .HasColumnType("float(10)");
-
-                            b1.HasKey("SiteId");
-
-                            b1.ToTable("sites");
-
-                            b1.WithOwner()
-                                .HasForeignKey("SiteId");
-                        });
-
-                    b.OwnsOne("GMAO.Domain.ValueObjects.SiteAccess", "SiteAccessInfo", b1 =>
-                        {
-                            b1.Property<Guid>("SiteId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("AccessCodes")
-                                .ValueGeneratedOnAdd()
-                                .HasMaxLength(255)
-                                .HasColumnType("nvarchar(255)")
-                                .HasDefaultValue("");
-
-                            b1.Property<string>("AccessRestrictions")
-                                .ValueGeneratedOnAdd()
-                                .HasMaxLength(255)
-                                .HasColumnType("nvarchar(255)")
-                                .HasDefaultValue("");
-
-                            b1.Property<string>("GeneralInstructions")
-                                .ValueGeneratedOnAdd()
-                                .HasMaxLength(255)
-                                .HasColumnType("nvarchar(255)")
-                                .HasDefaultValue("");
-
-                            b1.Property<string>("KeyInstructions")
-                                .ValueGeneratedOnAdd()
-                                .HasMaxLength(255)
-                                .HasColumnType("nvarchar(255)")
-                                .HasDefaultValue("");
-
-                            b1.Property<string>("ParkingInfo")
-                                .ValueGeneratedOnAdd()
-                                .HasMaxLength(255)
-                                .HasColumnType("nvarchar(255)")
-                                .HasDefaultValue("");
-
-                            b1.Property<bool?>("RequiresBadge")
-                                .HasColumnType("bit");
-
-                            b1.Property<string>("SafetyRequirements")
-                                .ValueGeneratedOnAdd()
-                                .HasMaxLength(255)
-                                .HasColumnType("nvarchar(255)")
-                                .HasDefaultValue("");
-
-                            b1.Property<string>("WorkingHours")
-                                .ValueGeneratedOnAdd()
-                                .HasMaxLength(255)
-                                .HasColumnType("nvarchar(255)")
-                                .HasDefaultValue("");
-
-                            b1.HasKey("SiteId");
-
-                            b1.ToTable("sites");
-
-                            b1.WithOwner()
-                                .HasForeignKey("SiteId");
-                        });
-
-                    b.Navigation("Address")
-                        .IsRequired();
-
-                    b.Navigation("BillingAddress")
-                        .IsRequired();
-
-                    b.Navigation("ClientContact");
-
-                    b.Navigation("ClientType");
-
-                    b.Navigation("Commercial");
-
-                    b.Navigation("Coordinates");
-
-                    b.Navigation("Customer");
-
-                    b.Navigation("OperationsManager");
-
-                    b.Navigation("PaymentMethod");
-
-                    b.Navigation("SectorManager");
-
-                    b.Navigation("SectorType");
-
-                    b.Navigation("SiteAccessInfo")
-                        .IsRequired();
-
-                    b.Navigation("Technician1");
-
-                    b.Navigation("Technician2");
-
-                    b.Navigation("VAT");
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.SiteClientType", b =>
-                {
-                    b.HasOne("GMAO.Domain.Entities.siteAggregate.SiteCategory", "SiteCategory")
-                        .WithMany("SiteClientTypes")
-                        .HasForeignKey("SiteCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("SiteCategory");
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.SiteContact", b =>
-                {
-                    b.HasOne("GMAO.Domain.Entities.ContactType", "SiteContactCategory")
-                        .WithMany("Contacts")
-                        .HasForeignKey("SiteContactCategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("GMAO.Domain.Entities.siteAggregate.Site", "Site")
-                        .WithMany("Contacts")
-                        .HasForeignKey("SiteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Site");
-
-                    b.Navigation("SiteContactCategory");
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.SiteDocument", b =>
-                {
-                    b.HasOne("GMAO.Domain.Entities.siteAggregate.Site", "Site")
-                        .WithMany("Documents")
-                        .HasForeignKey("SiteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Site");
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.SiteKeeper", b =>
-                {
-                    b.HasOne("GMAO.Domain.Entities.siteAggregate.Site", "Site")
-                        .WithMany("SiteKeepers")
-                        .HasForeignKey("SiteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Site");
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.Unit", b =>
-                {
-                    b.HasOne("GMAO.Domain.Entities.siteAggregate.Site", "Site")
-                        .WithMany("Units")
-                        .HasForeignKey("SiteId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Site");
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.Warranty", b =>
-                {
-                    b.HasOne("GMAO.Domain.Entities.siteAggregate.Asset", "Asset")
-                        .WithMany("Warranties")
-                        .HasForeignKey("AssetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Asset");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("GMAO.Infrastructure.Persistance.Identity.ApplicationRole", null)
@@ -6848,6 +6243,24 @@ namespace GMAO.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("GMAO.Domain.Entities.Asset", b =>
+                {
+                    b.Navigation("ClientsCommercial");
+
+                    b.Navigation("MaintenancePlans");
+
+                    b.Navigation("ServiceRequests");
+
+                    b.Navigation("Warranties");
+                });
+
+            modelBuilder.Entity("GMAO.Domain.Entities.AssetCategory", b =>
+                {
+                    b.Navigation("Assets");
+
+                    b.Navigation("SubCategories");
+                });
+
             modelBuilder.Entity("GMAO.Domain.Entities.Auth.Permission", b =>
                 {
                     b.Navigation("Roles");
@@ -6862,11 +6275,6 @@ namespace GMAO.Infrastructure.Migrations
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("GMAO.Domain.Entities.ContactType", b =>
-                {
-                    b.Navigation("Contacts");
-                });
-
             modelBuilder.Entity("GMAO.Domain.Entities.Customer", b =>
                 {
                     b.Navigation("Contacts");
@@ -6879,11 +6287,6 @@ namespace GMAO.Infrastructure.Migrations
 
                     b.Navigation("MaintenanceBudgets");
 
-                    b.Navigation("Sites");
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.CustomerContact", b =>
-                {
                     b.Navigation("Sites");
                 });
 
@@ -6924,11 +6327,24 @@ namespace GMAO.Infrastructure.Migrations
                     b.Navigation("Shares");
                 });
 
+            modelBuilder.Entity("GMAO.Domain.Entities.MaintenancePlan", b =>
+                {
+                    b.Navigation("Tasks");
+                });
+
+            modelBuilder.Entity("GMAO.Domain.Entities.MarketType", b =>
+                {
+                    b.Navigation("Sites");
+                });
+
+            modelBuilder.Entity("GMAO.Domain.Entities.Occupant", b =>
+                {
+                    b.Navigation("ServiceRequests");
+                });
+
             modelBuilder.Entity("GMAO.Domain.Entities.PaymentMethod", b =>
                 {
                     b.Navigation("Clients");
-
-                    b.Navigation("Sites");
                 });
 
             modelBuilder.Entity("GMAO.Domain.Entities.PropertyGroup", b =>
@@ -6971,10 +6387,29 @@ namespace GMAO.Infrastructure.Migrations
                     b.Navigation("WorkOrders");
                 });
 
+            modelBuilder.Entity("GMAO.Domain.Entities.Site", b =>
+                {
+                    b.Navigation("Assets");
+
+                    b.Navigation("Quotes");
+
+                    b.Navigation("ServiceRequests");
+
+                    b.Navigation("Units");
+                });
+
+            modelBuilder.Entity("GMAO.Domain.Entities.SiteCategory", b =>
+                {
+                    b.Navigation("SiteClientTypes");
+                });
+
+            modelBuilder.Entity("GMAO.Domain.Entities.SiteClientType", b =>
+                {
+                    b.Navigation("Sites");
+                });
+
             modelBuilder.Entity("GMAO.Domain.Entities.Skill", b =>
                 {
-                    b.Navigation("MaintenanceTaskSkills");
-
                     b.Navigation("TechnicianSkills");
                 });
 
@@ -6987,8 +6422,6 @@ namespace GMAO.Infrastructure.Migrations
                     b.Navigation("QuotesFor");
 
                     b.Navigation("SiteCommercials");
-
-                    b.Navigation("SiteSectorManagers");
 
                     b.Navigation("Technician1ForSites");
 
@@ -7006,11 +6439,6 @@ namespace GMAO.Infrastructure.Migrations
                     b.Navigation("PurchaseOrders");
                 });
 
-            modelBuilder.Entity("GMAO.Domain.Entities.TVA", b =>
-                {
-                    b.Navigation("Sites");
-                });
-
             modelBuilder.Entity("GMAO.Domain.Entities.Technician", b =>
                 {
                     b.Navigation("AssignedWorkOrders");
@@ -7018,6 +6446,15 @@ namespace GMAO.Infrastructure.Migrations
                     b.Navigation("Metrics");
 
                     b.Navigation("Skills");
+                });
+
+            modelBuilder.Entity("GMAO.Domain.Entities.Unit", b =>
+                {
+                    b.Navigation("Assets");
+
+                    b.Navigation("Occupants");
+
+                    b.Navigation("ServiceRequests");
                 });
 
             modelBuilder.Entity("GMAO.Domain.Entities.WorkOrder", b =>
@@ -7035,75 +6472,6 @@ namespace GMAO.Infrastructure.Migrations
                     b.Navigation("TimeEntries");
 
                     b.Navigation("UsedParts");
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.Asset", b =>
-                {
-                    b.Navigation("ClientsCommercial");
-
-                    b.Navigation("MaintenancePlans");
-
-                    b.Navigation("ServiceRequests");
-
-                    b.Navigation("Warranties");
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.AssetCategory", b =>
-                {
-                    b.Navigation("Assets");
-
-                    b.Navigation("SubCategories");
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.MaintenancePlan", b =>
-                {
-                    b.Navigation("Tasks");
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.Occupant", b =>
-                {
-                    b.Navigation("ServiceRequests");
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.SectorType", b =>
-                {
-                    b.Navigation("Sites");
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.Site", b =>
-                {
-                    b.Navigation("Assets");
-
-                    b.Navigation("Contacts");
-
-                    b.Navigation("Documents");
-
-                    b.Navigation("Quotes");
-
-                    b.Navigation("ServiceRequests");
-
-                    b.Navigation("SiteKeepers");
-
-                    b.Navigation("Units");
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.SiteCategory", b =>
-                {
-                    b.Navigation("SiteClientTypes");
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.SiteClientType", b =>
-                {
-                    b.Navigation("Sites");
-                });
-
-            modelBuilder.Entity("GMAO.Domain.Entities.siteAggregate.Unit", b =>
-                {
-                    b.Navigation("Assets");
-
-                    b.Navigation("Occupants");
-
-                    b.Navigation("ServiceRequests");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,4 +1,4 @@
-﻿using GMAO.Domain.Entities;
+﻿using GMAO.Domain.Entities.siteAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -17,7 +17,7 @@ namespace GMAO.Infrastructure.Persistance.Configurations
 
             builder.HasOne(mt => mt.MaintenancePlan).WithMany(mp => mp.Tasks)
                 .HasForeignKey(mt => mt.MaintenancePlanId).OnDelete(DeleteBehavior.Cascade);
-            builder.HasOne(mt => mt.RequiredSkill).WithMany()
+            builder.HasOne(mt => mt.RequiredSkill).WithMany(x => x.MaintenanceTaskSkills)
                 .HasForeignKey(mt => mt.RequiredSkillId).OnDelete(DeleteBehavior.SetNull);
 
             builder.HasIndex(mt => mt.MaintenancePlanId);
