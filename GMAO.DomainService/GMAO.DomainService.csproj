@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\GMAO.Application\GMAO.Application.csproj" />
+    <ProjectReference Include="..\GMAO.Domain\GMAO.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -26,6 +26,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GMAO.Application\GMAO.Application.csproj" />
+    <ProjectReference Include="..\GMAO.DATA.Seed\GMAO.DATA.Seed.csproj" />
+    <ProjectReference Include="..\GMAO.DomainService\GMAO.DomainService.csproj" />
     <ProjectReference Include="..\GMAO.Infrastructure\GMAO.Infrastructure.csproj" />
   </ItemGroup>
 

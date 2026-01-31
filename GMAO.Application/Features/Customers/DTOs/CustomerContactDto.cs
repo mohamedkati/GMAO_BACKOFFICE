@@ -20,6 +20,7 @@ namespace GMAO.Application.Features.Customers.DTOs
         public string? Mobile { get; set; }
         public string? Position { get; set; }
         public bool IsPrimary { get; set; }
+        public string FullName => FirstName + " " + LastName;
         public PreferredContactMethod PreferredContactMethod { get; set; }
     }
 }

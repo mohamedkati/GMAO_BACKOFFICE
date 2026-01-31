@@ -3,6 +3,8 @@ using GMAO.API.Extensions;
 using GMAO.Application.Common.AppSettings;
 using GMAO.Application.Common.Behaviours;
 using GMAO.Application.DIExtensions;
+using GMAO.DATA.Seed.SeedData;
+using GMAO.DomainService.Helpers;
 using GMAO.Infrastructure.DIHelpers;
 using GMAO.Infrastructure.Persistance.Seed;
 using Microsoft.AspNetCore.Identity;
@@ -38,6 +40,7 @@ builder.Services.AddInfrastructureServices(builder.Configuration).AddDefaultToke
 builder.Services.ConfigureAppAuthenticationServices();
 builder.Services.RegisterAuthentication(builder.Configuration);
 builder.Services.AddApplicationLayer();
+builder.Services.RegisterDomainServices();
 
 builder.Services.AddCors(opt =>
 {
@@ -60,7 +63,9 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.MapSwagger();
 }
-await DbInitializer.SeedAsync(app.Services);
+//await DbInitializer.SeedAsync(app.Services);
+//await DatabaseSeeder.ResetAsync(app.Services);
+//await DatabaseSeeder.SeedAsync(app.Services);
 
 app.UseCors("CorsPolicy");
 

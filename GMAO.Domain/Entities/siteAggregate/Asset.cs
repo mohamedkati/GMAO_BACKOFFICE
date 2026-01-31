@@ -23,7 +23,7 @@ namespace GMAO.Domain.Entities.siteAggregate
         public string? Model { get; set; }
         public string? SerialNumber { get; set; }
         public AssetLocation? Location { get; set; }
-        public DateTime InstallationDate { get; set; }
+        public DateTime? InstallationDate { get; set; }
         public AssetStatus Status { get; set; }
         public CriticalityLevel CriticalityLevel { get; set; }
         public AssetHealthStatus HealthStatus { get; set; }

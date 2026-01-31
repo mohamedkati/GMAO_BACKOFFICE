@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GMAO.Application.Features.payment_methods.Queries.GetAsKeyValue
 {
-    public class GetAsKeyValueQuery : IRequest<ResponseResult<IReadOnlyList<PaymentMethodAsKeyValueDto>>>
+    public class GetAsKeyValueQuery : IRequest<ResponseResult<IReadOnlyList<SharedPaymentMethodDto>>>
     {
         public string? Search { get; set; }
     }

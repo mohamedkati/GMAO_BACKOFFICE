@@ -7,13 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Common\Mapping\NewFolder\" />
     <Folder Include="Features\me\Commands\" />
     <Folder Include="Features\Quotes\Commands\" />
     <Folder Include="Features\Quotes\Dtos\" />
     <Folder Include="Features\Quotes\EventHandlers\" />
     <Folder Include="Features\Quotes\Services\" />
     <Folder Include="Features\Quotes\Queries\" />
+    <Folder Include="Features\Shared\Settings\SectorTypes\Commands\" />
+    <Folder Include="Features\sites\validators\" />
     <Folder Include="Features\Staffs\DTOs\" />
   </ItemGroup>
 

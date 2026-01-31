@@ -7,7 +7,7 @@ using MediatR;
 
 namespace GMAO.Application.Features.payment_methods.Queries.GetAsKeyValue
 {
-    public class GetAsKeyValueQueryHandler : IRequestHandler<GetAsKeyValueQuery, ResponseResult<IReadOnlyList<PaymentMethodAsKeyValueDto>>>
+    public class GetAsKeyValueQueryHandler : IRequestHandler<GetAsKeyValueQuery, ResponseResult<IReadOnlyList<SharedPaymentMethodDto>>>
     {
         private readonly IRepository<PaymentMethod> _repository;
         private readonly IMapper _mapper;
@@ -17,7 +17,7 @@ namespace GMAO.Application.Features.payment_methods.Queries.GetAsKeyValue
             this._repository = repository;
             this._mapper = mapper;
         }
-        public async Task<ResponseResult<IReadOnlyList<PaymentMethodAsKeyValueDto>>> Handle(GetAsKeyValueQuery request, CancellationToken cancellationToken)
+        public async Task<ResponseResult<IReadOnlyList<SharedPaymentMethodDto>>> Handle(GetAsKeyValueQuery request, CancellationToken cancellationToken)
         {
             IReadOnlyList<PaymentMethod> result = null;
             if (!string.IsNullOrEmpty(request.Search))
@@ -25,7 +25,7 @@ namespace GMAO.Application.Features.payment_methods.Queries.GetAsKeyValue
             else
                 result = await _repository.GetAllAsync(cancellationToken);
 
-            return ResponseResult<IReadOnlyList<PaymentMethodAsKeyValueDto>>.OkResult(_mapper.Map<IReadOnlyList<PaymentMethodAsKeyValueDto>>(result));
+            return ResponseResult<IReadOnlyList<SharedPaymentMethodDto>>.OkResult(_mapper.Map<IReadOnlyList<SharedPaymentMethodDto>>(result));
         }
     }
 }

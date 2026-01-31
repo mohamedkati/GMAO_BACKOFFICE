@@ -14,6 +14,7 @@ namespace GMAO.Application.Features.Customers.Queries.GetCustomerContacts;
 public class GetCustomerContactsQuery : IRequest<ResponseResult<IReadOnlyList<CustomerContactDto>>>, IRequiredPermission
 {
     public Guid CustomerId { get; set; }
+    public string? Search { get; set; }
 
     public string[] RequiredPermissions => [PermissionConfig.CombineResourceAction(Resource.CustomerContacts, StandardAction.View)];
 }

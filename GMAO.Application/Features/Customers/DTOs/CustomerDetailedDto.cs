@@ -28,6 +28,6 @@ namespace GMAO.Application.Features.Customers.DTOs
         public IReadOnlyList<CustomerBudgetDto> MaintenanceBudgets { get; set; } = new List<CustomerBudgetDto>();
         public DateTime CreatedAt { get; set; }
         public DateTime LastModifiedAt { get; set; }
-        public PaymentMethodAsKeyValueDto PaymentMethod { get; set; }
+        public SharedPaymentMethodDto PaymentMethod { get; set; }
     }
 }

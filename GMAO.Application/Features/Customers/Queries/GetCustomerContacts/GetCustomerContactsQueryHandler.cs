@@ -15,7 +15,7 @@ public class GetCustomerContactsQueryHandler : IRequestHandler<GetCustomerContac
     }
     public async Task<ResponseResult<IReadOnlyList<CustomerContactDto>>> Handle(GetCustomerContactsQuery request, CancellationToken cancellationToken)
     {
-        var contacts = await _repository.GetCustomerContactsAsync(request.CustomerId);
+        var contacts = await _repository.GetCustomerContactsAsync(request.CustomerId, request.Search);
 
         return ResponseResult<IReadOnlyList<CustomerContactDto>>.OkResult(contacts);
     }

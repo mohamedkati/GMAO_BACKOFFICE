@@ -6,6 +6,7 @@ using GMAO.Application.Features.Customers.Commands.UpdateBudget;
 using GMAO.Application.Features.Customers.Commands.UpdateCustomer;
 using GMAO.Application.Features.Customers.Commands.UpdateCustomerContact;
 using GMAO.Application.Features.Customers.DTOs;
+using GMAO.Application.SharedBusiness.Dtos.customer;
 using GMAO.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -38,6 +39,9 @@ namespace GMAO.Application.Common.Mapping.CustomerProfile
             CreateMap<MaintenanceBudget, CustomerBudgetDto>();
             CreateMap<CreateBudgetCommand, MaintenanceBudget>();
             CreateMap<UpdateBudgetCommand, MaintenanceBudget>();
+
+            CreateMap<Customer, SharedCustomerDto>();
+            CreateMap<Customer, CustomerForSelectControlDto>();
         }
     }
 }

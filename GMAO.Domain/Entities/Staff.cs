@@ -29,6 +29,19 @@ namespace GMAO.Domain.Entities
         //public Guid RoleId { get; set; } = default!;
         //public Role Role { get; set; } = default!;
         public bool IsPdaActive { get; set; }
+        
+        public ICollection<Customer> ClientCommercials { get; set; } = new List<Customer>();
+        public ICollection<Site> SiteCommercials { get; set; }
+        public ICollection<ServiceRequest> QuotesFor { get; set; }
+        public ICollection<Site> OperationManagerForSites { get; set; }
+        public ICollection<Site> SiteSectorManagers { get; set; }
+        public ICollection<Site> Technician1ForSites { get; set; }
+        public ICollection<Site> Technician2ForSites { get; set; }
+        public ICollection<TenantUser> Tenants { get; set; }
+        public ICollection<UserPermission> UserPermissions { get; set; } = new List<UserPermission>();
+
+
+        #region Contructors
         public Staff()
         {
         }
@@ -60,14 +73,6 @@ namespace GMAO.Domain.Entities
             // Raise Domain Event to send email with password to the new staff
             AddDomainEvent(new StaffCreatedEvent(id, tenantId, password, email));
         }
-        public ICollection<Customer> ClientCommercials { get; set; } = new List<Customer>();
-        public ICollection<Site> SiteCommercials { get; set; }
-        public ICollection<ServiceRequest> QuotesFor { get; set; }
-        public ICollection<Site> OperationManagerForSites { get; set; }
-        public ICollection<Site> SiteSectorManagers { get; set; }
-        public ICollection<Site> Technician1ForSites { get; set; }
-        public ICollection<Site> Technician2ForSites { get; set; }
-        public ICollection<TenantUser> Tenants { get; set; }
-        public ICollection<UserPermission> UserPermissions { get; set; } = new List<UserPermission>();
+        #endregion
     }
 }

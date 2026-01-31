@@ -52,7 +52,10 @@ namespace GMAO.Infrastructure.Persistance
         // Property Management
         public DbSet<Site> Sites => Set<Site>();
         public DbSet<Unit> Units => Set<Unit>();
+        public DbSet<SiteKeeper> SiteKeepers => Set<SiteKeeper>();
+        public DbSet<SiteContact> SiteContacts => Set<SiteContact>();
         public DbSet<Occupant> Occupants => Set<Occupant>();
+        public DbSet<SiteDocument> SiteDocuments => Set<SiteDocument>();
 
         // Asset Management
         public DbSet<Asset> Assets => Set<Asset>();
@@ -228,7 +231,12 @@ namespace GMAO.Infrastructure.Persistance
                     auditable.CreatedAt = _datetimeService.UtcNow;
                     if (auditable.Id == Guid.Empty)
                         auditable.Id = Guid.NewGuid();
-                    auditable.TenantId = _authenticatedUser.TenantId;
+                    if(_authenticatedUser.TenantId != Guid.Empty)
+                    {
+                        //throw new Exception(AppStrings.ErrorMessages.TenantIdMissingOnCreate);
+                        auditable.TenantId = _authenticatedUser.TenantId;
+                    }
+                   
                     auditable.CreatedBy = _authenticatedUser.IsAuthenticated() ? _authenticatedUser.UserId : Guid.Empty; // TODO: Récupérer l'ID de l'utilisateur courant
                 }
                 else if (entry.State == EntityState.Modified)

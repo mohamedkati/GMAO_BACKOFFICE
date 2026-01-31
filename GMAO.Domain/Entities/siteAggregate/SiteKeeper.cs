@@ -14,6 +14,10 @@ public class SiteKeeper : BaseAuditableEntity
     public string Email { get; set; }
     public string Phone { get; set; }
     public string CellPhone { get; set; }
+    public string WorkingHours { get; set; }
+    public string Location { get; set; }
+    public string Notes { get; set; }
+    public bool IsMainKeeper { get; set; }
     public virtual Site Site { get; set; }
     public Guid SiteId { get; set; }
 }

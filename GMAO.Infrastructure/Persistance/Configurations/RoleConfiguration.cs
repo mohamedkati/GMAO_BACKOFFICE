@@ -12,6 +12,7 @@ namespace GMAO.Infrastructure.Persistance.Configurations
             builder.HasKey(r => r.Id);
             builder.Property(r => r.Name).HasMaxLength(100).IsRequired();
             builder.Property(e => e.DisplayName).IsRequired().HasMaxLength(100);
+            builder.Property(e => e.Responsibilities).IsRequired(false).HasMaxLength(250);
             builder.HasIndex(e => e.Name).IsUnique();
             builder.HasMany(r => r.Permissions)
                    .WithOne(x => x.Role)

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GMAO.Application.SharedBusiness.Dtos.payment_method
 {
-    public class PaymentMethodAsKeyValueDto
+    public class SharedPaymentMethodDto
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

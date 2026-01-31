@@ -15,7 +15,7 @@ namespace GMAO.Application.Features.Customers.Queries.GetCustomers
 {
     public class GetCustomersQuery : PagedRequest, IRequest<PagedResponse<CustomerDto>>, IRequiredPermission
     {
-        public string? SearchString { get; set; }
+        public string? Search { get; set; }
         public Guid? PropertyGroupId { get; set; }
         public Guid? CommercialId { get; set; }
         public List<CustomerType>? Types { get; set; }

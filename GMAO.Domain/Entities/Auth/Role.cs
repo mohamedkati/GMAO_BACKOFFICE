@@ -12,6 +12,7 @@ namespace GMAO.Domain.Entities.Auth
         public string Name { get;  set; } = default!;
         public string DisplayName { get; set; } // "Administrateur", "Manager", etc.
         public string Description { get; set; }
+        public string? Responsibilities { get; set; } // description des responsabilités associées au rôle
         public bool IsSystem { get; set; } // true pour les rôles par défaut (non supprimables)
         public int Priority { get; set; }
         public ICollection<RolePermission> Permissions { get; set; } = new List<RolePermission>();

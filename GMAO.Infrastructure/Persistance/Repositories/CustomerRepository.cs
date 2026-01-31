@@ -4,6 +4,7 @@ using GMAO.Application.Common.Interfaces.Repositories;
 using GMAO.Application.Features.Customers.Commands.CreateBudget;
 using GMAO.Application.Features.Customers.DTOs;
 using GMAO.Application.Features.Customers.Queries.GetCustomers;
+using GMAO.Application.SharedBusiness.Dtos.customer;
 using GMAO.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -38,9 +39,13 @@ namespace GMAO.Infrastructure.Persistance.Repositories
             return budgets;
         }
 
-        public async Task<IReadOnlyList<CustomerContactDto>> GetCustomerContactsAsync(Guid customerId)
+        public async Task<IReadOnlyList<CustomerContactDto>> GetCustomerContactsAsync(Guid customerId, string? search)
         {
-            var contacts = await _context.CustomerContacts
+            var query = _context.CustomerContacts.AsQueryable();
+            if (!string.IsNullOrEmpty(search))
+                query = query.Where(c => c.FirstName.Contains(search) || c.LastName.Contains(search) || c.Email.Contains(search) || (c.Phone != null && c.Phone.Contains(search)));
+
+            var contacts = await query
                 .Where(c => c.CustomerId == customerId)
                 .ProjectTo<CustomerContactDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
@@ -48,11 +53,38 @@ namespace GMAO.Infrastructure.Persistance.Repositories
             return contacts;
         }
 
+        public async Task<IReadOnlyList<CustomerForSelectControlDto>> GetCustomersForSelectControlAsync(string? search, int? pageSize, CancellationToken cancellationToken)
+        {
+            var query = _context.Customers.AsQueryable();
+            if (!string.IsNullOrEmpty(search))
+            {
+                if (search.Contains(" "))
+                {
+                    var terms = search.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var term in terms)
+                    {
+                        query = query.Where(c => c.CompanyName.Contains(term) || c.Reference.Contains(term) || c.InvoiceAddress.FirstAddressLine.Contains(term));
+                    }
+                }
+                else
+                    query = query.Where(c => c.CompanyName.Contains(search) || c.Reference.Contains(search));
+            }
+
+            if (pageSize.HasValue)
+            {
+                query = query.Take(pageSize.Value);
+            }
+
+            return await query.ProjectTo<CustomerForSelectControlDto>(_mapper.ConfigurationProvider)
+                        .AsNoTracking()
+                        .ToListAsync(cancellationToken);
+        }
+
         public async Task<CustomerDetailedDto?> GetCustomerWithContactsAndBudgetsById(Guid id, CancellationToken cancellationToken = default)
         {
             var query = _context.Customers.Include(c => c.Contacts)
                                           .Include(c => c.MaintenanceBudgets)
-                                          .Include(c=> c.PaymentMethod)
+                                          .Include(c => c.PaymentMethod)
                                           .Where(c => c.Id == id)
                                           .ProjectTo<CustomerDetailedDto>(_mapper.ConfigurationProvider)
                                           .AsNoTracking();
@@ -69,8 +101,8 @@ namespace GMAO.Infrastructure.Persistance.Repositories
                .AsNoTracking()
                .AsQueryable();
 
-            if (!string.IsNullOrEmpty(filter.SearchString))
-                query = query.Where(c => c.CompanyName.Contains(filter.SearchString) || c.Reference.Contains(filter.SearchString));
+            if (!string.IsNullOrEmpty(filter.Search))
+                query = query.Where(c => c.CompanyName.Contains(filter.Search) || c.Reference.Contains(filter.Search));
 
             if (filter.PropertyGroupId.HasValue)
                 query = query.Where(c => c.PropertyGroupId == filter.PropertyGroupId.Value);

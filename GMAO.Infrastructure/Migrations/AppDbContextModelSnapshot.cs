@@ -181,6 +181,12 @@ namespace GMAO.Infrastructure.Migrations
                     b.Property<int>("Priority")
                         .HasColumnType("int");
 
+                    b.Property<string>("Responsibilities")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)")
+                        .HasDefaultValue("");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
@@ -4069,9 +4075,6 @@ namespace GMAO.Infrastructure.Migrations
                         .HasColumnType("nvarchar(250)")
                         .HasDefaultValue("");
 
-                    b.Property<Guid>("MarketTypeId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
@@ -4095,6 +4098,9 @@ namespace GMAO.Infrastructure.Migrations
                     b.Property<Guid?>("SectorManagerId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("SectorTypeId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Siren")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(50)
@@ -4106,6 +4112,9 @@ namespace GMAO.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
                         .HasDefaultValue("");
+
+                    b.Property<int?>("SurfaceArea")
+                        .HasColumnType("int");
 
                     b.Property<Guid?>("Technician1Id")
                         .HasColumnType("uniqueidentifier");
@@ -4139,8 +4148,6 @@ namespace GMAO.Infrastructure.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.HasIndex("MarketTypeId");
-
                     b.HasIndex("OperationsManagerId");
 
                     b.HasIndex("PaymentMethodId");
@@ -4149,6 +4156,8 @@ namespace GMAO.Infrastructure.Migrations
                         .IsUnique();
 
                     b.HasIndex("SectorManagerId");
+
+                    b.HasIndex("SectorTypeId");
 
                     b.HasIndex("Technician1Id");
 
@@ -6462,12 +6471,6 @@ namespace GMAO.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("GMAO.Domain.Entities.siteAggregate.SectorType", "SectorType")
-                        .WithMany("Sites")
-                        .HasForeignKey("MarketTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("GMAO.Domain.Entities.Staff", "OperationsManager")
                         .WithMany("OperationManagerForSites")
                         .HasForeignKey("OperationsManagerId");
@@ -6479,6 +6482,12 @@ namespace GMAO.Infrastructure.Migrations
                     b.HasOne("GMAO.Domain.Entities.Staff", "SectorManager")
                         .WithMany("SiteSectorManagers")
                         .HasForeignKey("SectorManagerId");
+
+                    b.HasOne("GMAO.Domain.Entities.siteAggregate.SectorType", "SectorType")
+                        .WithMany("Sites")
+                        .HasForeignKey("SectorTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("GMAO.Domain.Entities.Staff", "Technician1")
                         .WithMany("Technician1ForSites")

@@ -13,13 +13,13 @@ namespace GMAO.API.Controllers.v1
         }
 
         [HttpGet("get-as-key-value")]
-        public async Task<ActionResult<ResponseResult<IReadOnlyList<PaymentMethodAsKeyValueDto>>>> GetPaymentMethods([FromQuery] string? search)
+        public async Task<ActionResult<ResponseResult<IReadOnlyList<SharedPaymentMethodDto>>>> GetPaymentMethods([FromQuery] string? search)
         {
             return Ok(await Mediator.Send(new GetAsKeyValueQuery() { Search = search }));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ResponseResult<PaymentMethodAsKeyValueDto>>> GetPaymentMethodById([FromRoute] Guid id)
+        public async Task<ActionResult<ResponseResult<SharedPaymentMethodDto>>> GetPaymentMethodById([FromRoute] Guid id)
         {
             return Ok(await Mediator.Send(new GetPaymentMethodByIdQuery() { Id = id }));
         }

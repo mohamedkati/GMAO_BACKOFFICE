@@ -7,7 +7,7 @@ using MediatR;
 
 namespace GMAO.Application.Features.payment_methods.Queries.GetPaymentMethodById
 {
-    public class GetPaymentMethodByIdQueryHandler : IRequestHandler<GetPaymentMethodByIdQuery, ResponseResult<PaymentMethodAsKeyValueDto>>
+    public class GetPaymentMethodByIdQueryHandler : IRequestHandler<GetPaymentMethodByIdQuery, ResponseResult<SharedPaymentMethodDto>>
     {
         private readonly IRepository<PaymentMethod> _repository;
         private readonly IMapper _mapper;
@@ -17,14 +17,14 @@ namespace GMAO.Application.Features.payment_methods.Queries.GetPaymentMethodById
             this._repository = repository;
             this._mapper = mapper;
         }
-        public async Task<ResponseResult<PaymentMethodAsKeyValueDto>> Handle(GetPaymentMethodByIdQuery request, CancellationToken cancellationToken)
+        public async Task<ResponseResult<SharedPaymentMethodDto>> Handle(GetPaymentMethodByIdQuery request, CancellationToken cancellationToken)
         {
             var paymentMethod = await _repository.FirstOrDefaultAsync(pm => pm.Id == request.Id);
 
             if (paymentMethod == null)
-                return ResponseResult<PaymentMethodAsKeyValueDto>.OkResult(null);
+                return ResponseResult<SharedPaymentMethodDto>.OkResult(null);
 
-            return ResponseResult<PaymentMethodAsKeyValueDto>.OkResult(_mapper.Map<PaymentMethodAsKeyValueDto>(paymentMethod));
+            return ResponseResult<SharedPaymentMethodDto>.OkResult(_mapper.Map<SharedPaymentMethodDto>(paymentMethod));
         }
     }
 }

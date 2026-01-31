@@ -14,6 +14,7 @@ namespace GMAO.Domain.Entities.siteAggregate
         public decimal? SurfaceArea { get; set; }
         public int? Rooms { get; set; }
         public int OwnershipSharesCount { get; set; }
+
         public ICollection<Occupant> Occupants { get; set; } = new List<Occupant>();
         public ICollection<Asset> Assets { get; set; } = new List<Asset>();
         public ICollection<ServiceRequest> ServiceRequests { get; set; } = new List<ServiceRequest>();

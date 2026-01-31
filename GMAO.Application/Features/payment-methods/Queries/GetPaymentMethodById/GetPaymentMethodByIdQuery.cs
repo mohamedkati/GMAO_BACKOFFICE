@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GMAO.Application.Features.payment_methods.Queries.GetPaymentMethodById
 {
-    public class GetPaymentMethodByIdQuery  : IRequest<ResponseResult<PaymentMethodAsKeyValueDto>>
+    public class GetPaymentMethodByIdQuery  : IRequest<ResponseResult<SharedPaymentMethodDto>>
     {
         public Guid Id { get; set; }
     }

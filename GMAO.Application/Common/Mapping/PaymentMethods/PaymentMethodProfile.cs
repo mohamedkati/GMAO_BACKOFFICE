@@ -13,7 +13,7 @@ namespace GMAO.Application.Common.Mapping.PaymentMethods
     {
         public PaymentMethodProfile()
         {
-            CreateMap<PaymentMethod, PaymentMethodAsKeyValueDto>();
+            CreateMap<PaymentMethod, SharedPaymentMethodDto>();
         }
     }
 }
